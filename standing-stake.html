@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="flipclock.css">
+		<link rel="stylesheet" href="jquery-ui.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="jquery-ui.js"></script>
+		<script src="flipclock.js"></script>		
+		<script src="howler.js"></script>
+	</head>
+	<body>
+	<div class="buttons">
+	<div class="row">
+		<a><img src="B1.png" /></a> <div id="b5"  class="n">5 </div>
+		<a><img src="B1.png" /></a> <div id="b10" class="n">10</div>
+		<a><img src="B1.png" /></a> <div id="b15" class="n">15</div>
+	</div>
+	<div class="row">
+                <a><img src="B1.png" /></a> <div id="b20" class="n">20</div>
+                <a><img src="B1.png" /></a> <div id="b30" class="n">30</div>
+                <a><img src="B1.png" /></a> <div id="b40" class="n">40</div>
+        </div>
+	<div class="row">
+                <a><img src="B1.png" /></a> <div id="b50" class="n">50</div>
+                <a><img src="B1.png" /></a> <div id="b60" class="n">60</div>
+                <a><img src="B1.png" /></a> <div id="b80" class="n">80</div>
+        </div>
+	</div>
+	<div class="clocks">
+	<div id="clock0" style="margin:2em;"></div>
+	<div id="clock1" style="margin:2em;"></div>
+        <div id="clock2" style="margin:2em;"></div>
+	</div>
+	<style>
+        .n { position: absolute; top: 42px; font-family: cursive; font-size: 128px; }
+	#b5  { left:  90px; }
+	#b10 { left: 315px; }
+        #b15 { left: 569px; }
+	#b20 { left:  52px; }
+        #b30 { left: 306px; }
+        #b40 { left: 555px; }
+        #b50 { left:  52px; }
+        #b60 { left: 306px; }
+        #b80 { left: 555px; }
+
+
+	.row { position: relative; }
+	</style>
+	<script type="text/javascript">
+		var sound;
+		var music;
+		var clock0;
+		var clock1, clock2;
+		$(".clocks").hide();
+		$(".n").click(function() { 
+			var t = $(this).text();
+			$(".clocks").show();
+			$(".buttons").hide();
+                        clock0.start();
+                        clock1.setTime(t*60);
+                        clock2.setTime(t*60);
+                });
+
+		$(document).ready(function() {
+			//music = new Howl({urls: ['music/sound.mp3']}).play();
+			$("#start").button().click(function(e) {
+				var t = $("#time").val();
+				clock0.start();
+				clock1.setTime(t*60);
+				clock2.setTime(t*60);
+			});
+			sound = new Howl({urls: ['music/bell.wav']  });
+			clock0 = $('#clock0').FlipClock(10, {
+		        	clockFace: 'MinuteCounter',
+		        	countdown: true, autoStart: false,
+		        	callbacks: { stop: function() { clock1.start(); sound.play();} }
+		        });
+			clock1 = $('#clock1').FlipClock(5*60, {
+				clockFace: 'MinuteCounter',
+				countdown: true, autoStart: false,
+				callbacks: { stop: function() { clock2.start(); sound.play(); } }
+			});
+			clock2 = $('#clock2').FlipClock(5*60, {
+				clockFace: 'MinuteCounter',
+				countdown: true, autoStart: false,
+				callbacks: { stop: function() { sound.play(); $(".buttons").show(); $('.clocks').hide(); } }
+			});
+			
+		});
+		
+	</script>
+	
+	</body>
+</html>
