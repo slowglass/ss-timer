@@ -24,16 +24,16 @@
 	        <a id="cb5" class="cbl"><img src="green_button.png" class="green" /><img src="violet_button.png" class="violet" /><div class="cb">5</div></a>
 	    </div>
 		<div class="row">
-			<a id="b05" class="nl"><img src="grey_button.png" /><div class="n">5 </div></a>
-			<a id="b10" class="nl"><img src="grey_button.png" /><div class="n">10</div></a>
-			<a id="b15" class="nl"><img src="grey_button.png" /><div class="n">15</div></a>
-			<a id="b20" class="nl"><img src="grey_button.png" /><div class="n">20</div></a>
+			<a id="b01" class="nl"><img src="grey_button.png" /><div class="n">1 </div></a>
+			<a id="b02" class="nl"><img src="grey_button.png" /><div class="n">2 </div></a>
+			<a id="b03" class="nl"><img src="grey_button.png" /><div class="n">5 </div></a>
+			<a id="b04" class="nl"><img src="grey_button.png" /><div class="n">10</div></a>
 		</div>
 		<div class="row">
-	        <a id="b30" class="nl"><img src="grey_button.png" /><div class="n">30</div></a>
-	        <a id="b40" class="nl"><img src="grey_button.png" /><div class="n">40</div></a>
-	        <a id="b50" class="nl"><img src="grey_button.png" /><div class="n">50</div></a>
-	        <a id="b60" class="nl"><img src="grey_button.png" /><div class="n">60</div></a>
+	        <a id="b05" class="nl"><img src="grey_button.png" /><div class="n">20</div></a>
+	        <a id="b06" class="nl"><img src="grey_button.png" /><div class="n">30</div></a>
+	        <a id="b07" class="nl"><img src="grey_button.png" /><div class="n">45</div></a>
+	        <a id="b08" class="nl"><img src="grey_button.png" /><div class="n">60</div></a>
 	    </div>
 	</div>
 	<div class="clocks">
@@ -43,24 +43,20 @@
 		html, body { margin: 0; padding: 0; }
         .cb { position: absolute; top: 30px; font-family: cursive; font-size: 100px; color: #ffffff; }
         .n  { position: absolute; top: 30px; font-family: cursive; font-size: 100px; color: #ffffff; }
-		#b05 div { left:  70px; }
-		#b10 div { left: 250px; }
-        #b15 div { left: 450px; }
-		#b20 div { left: 650px; }
-		#b30 div { left:  40px; }
-		#b40 div { left: 250px; }
-        #b50 div { left: 450px; }
-		#b60 div { left: 650px; }
+		#b01 div { left:  70px; }
+		#b02 div { left: 250px; }
+        #b03 div { left: 450px; }
+		#b04 div { left: 650px; }
+		#b05 div { left:  40px; }
+		#b06 div { left: 250px; }
+        #b07 div { left: 450px; }
+		#b08 div { left: 650px; }
 		#cb2 div { left:  70px; }
 		#cb3 div { left: 280px; }
         #cb4 div { left: 480px; }
 		#cb5 div { left: 690px; }
 		.row { position: relative; }
-		.clocks { width: 350px; height: 130px; position: absolute; top:0; bottom: 0;  left: 0;  right: 0;  margin: auto; background-color: red;
-
-    
-
-   }
+		.clocks { width: 350px; height: 130px; position: absolute; top:0; bottom: 0;  left: 0;  right: 0;  margin: auto; }
 	</style>
 	<script type="text/javascript">
 		var sound;
@@ -73,15 +69,21 @@
 		function resetClock() {
 			repeatCount++;
 			playSound();
-			if (repeatCount == repeats+1)
+			if (repeatCount == repeats)
 			{
 				$(".clocks").hide();
 				$(".buttons").show();
+				console.log("Repeat: "+repeatCount);
+				console.log("Done:");
 			}
 			else
 			{
-				clock.setTime(duration);
+				clock.setTime(duration*60);
 				clock.start();
+				if (repeatCount == 0)
+					console.log("Setup: ");
+				else
+					console.log("Repeat: "+repeatCount);
 			}
 		}
 		$(".cbl .green").hide();
@@ -93,7 +95,7 @@
 			$(".clocks").show();
 			$(".buttons").hide();
 			duration=t*1;
-			repeatCount=0;
+			repeatCount=-1;
 			clock.setTime(10);
             clock.start();
         });
