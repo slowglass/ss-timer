@@ -92,17 +92,18 @@
 			var t = $("div", this).text();
 			$(".clocks").show();
 			$(".buttons").hide();
-				duration=t*1;
-				repeatCount=0;
-				clock.setTime(10);
-                clock.start();
-            });
+			duration=t*1;
+			repeatCount=0;
+			clock.setTime(10);
+            clock.start();
+        });
 		$(".cbl").click(function() {
 			var t = $("div", this).text();
 			$(".cbl .green").hide();
 			$(".cbl .violet").show();
 			$(".violet", this).hide();
 			$(".green", this).show();
+			repeats=t*1;
 		});
 
 		$(document).ready(function() {
