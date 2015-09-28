@@ -115,7 +115,12 @@
 			else
 			{
 				clock.setTime(duration*60);
-				clock.start();
+				$('.clocks.countdown').final_countdown({
+		            'start': seconds,
+		            'end': duration*60 + seconds,
+		            'now': seconds,       
+		            callback: function() { resetClock(); } 
+		        });
 				if (repeatCount == 0)
 					console.log("Setup: ");
 				else
@@ -128,6 +133,7 @@
 		$(".clocks").hide();
 		$(".nl").click(function() { 
 			var t = $("div", this).text();
+			duration = t * 1;
 			$(".clocks").show();
 			$(".buttons").hide();
 
@@ -135,9 +141,9 @@
 			repeatCount=-1;
 	    	$('.clocks.countdown').final_countdown({
 	            'start': seconds,
-	            'end': t*60 + seconds,
+	            'end': duration*60 + seconds,
 	            'now': seconds,       
-	            callback: function() { alert("Done"); } 
+	            callback: function() { resetClock(); } 
 	        });
         });
 		$(".cbl").click(function() {
