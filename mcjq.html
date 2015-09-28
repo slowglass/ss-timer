@@ -57,7 +57,8 @@
     	$('.countdown').final_countdown({
             'start': seconds,
             'end': 15 + seconds,
-            'now': seconds        
+            'now': seconds,       
+            callbackFunction: function() { alert("Done"); } 
         });
     });
 </script>
