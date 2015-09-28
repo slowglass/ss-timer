@@ -135,7 +135,7 @@
 			repeatCount=-1;
 	    	$('.clocks.countdown').final_countdown({
 	            'start': seconds,
-	            'end': duration*60 + seconds,
+	            'end': t*60 + seconds,
 	            'now': seconds,       
 	            callback: function() { alert("Done"); } 
 	        });
