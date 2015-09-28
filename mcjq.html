@@ -53,11 +53,11 @@
 <script type="text/javascript">  
     $('document').ready(function() {
         'use strict';
-        
+        var seconds = new Date().getTime() / 1000;
     	$('.countdown').final_countdown({
-            'start': 0,
-            'end': 15*60,
-            'now': 0        
+            'start': seconds,
+            'end': 15*60 + seconds,
+            'now': seconds        
         });
     });
 </script>
