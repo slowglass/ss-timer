@@ -24,9 +24,9 @@
         element = $(this);        
 
         // Element is not visibile
-        if ( ! element.is(':visible') ) {
-            return;
-        }
+        //if ( ! element.is(':visible') ) {
+        //    return;
+        //}
 
         var defaults = $.extend({
             start: undefined,
