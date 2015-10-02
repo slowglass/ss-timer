@@ -19,8 +19,9 @@
 
     var element;
     var callbackFunction;
+    var callbackFunction2;
 
-    $.fn.final_countdown = function(options, callback) {
+    $.fn.final_countdown = function(options, callback, callback2) {
         element = $(this);        
 
         // Element is not visibile
@@ -78,6 +79,10 @@
 
         if (typeof callback == 'function') { // make sure the callback is a function
             callbackFunction = callback;
+        }
+
+        if (typeof callback2 == 'function') { // make sure the callback is a function
+            callbackFunction2 = callback2;
         }
         
         responsive();
@@ -182,6 +187,12 @@
                         callbackFunction.call(this); // brings the scope to the callback
                     }
                     return;
+                }
+                else
+                {
+                    if (callbackFunction2 !== undefined) {
+                        callbackFunction2.call(this); // brings the scope to the callback
+                    }
                 }
 
                 timer.seconds = 1;

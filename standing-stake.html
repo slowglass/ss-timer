@@ -1,6 +1,5 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="flipclock.css">
 		<link rel="stylesheet" href="jquery-ui.css">
 		<link rel="icon" type="image/x-icon" href="taichi.png" /> 
 
@@ -16,7 +15,6 @@
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="jquery-ui.js"></script>
-		<script src="flipclock.js"></script>		
 		<script src="howler.js"></script>
 
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -95,16 +93,20 @@
 
 	</style>
 	<script type="text/javascript">
-		var sound;
+		var endSound;
+		var minSound;
 		var duration=0;
 		var repeats=2;
 		var deferred;
-		var clock;
-		var colors
-		function playSound() { sound.play(); }
+		var colors;
+		var min=5;
+		var setupTime;
+
+		function playEndSound() { endSound.play(); }
+		function playSound() { minSound.play(); }
 		function resetClock() {
 			repeatCount++;
-			playSound();
+			endSound();
 			if (repeatCount == repeats)
 			{
 				$(".clocks").hide();
@@ -114,13 +116,13 @@
 			}
 			else
 			{
-				clock.setTime(duration*60);
+				var seconds = new Date().getTime() / 1000;
 				$('.clocks.countdown').final_countdown({
 		            'start': seconds,
-		            'end': duration*60 + seconds,
-		            'now': seconds,       
-		            callback: function() { resetClock(); } 
-		        });
+		            'end': duration*min + seconds,
+		            'now': seconds},       
+		            resetClock, playSound 
+		        );
 				if (repeatCount == 0)
 					console.log("Setup: ");
 				else
@@ -141,10 +143,10 @@
 			repeatCount=-1;
 	    	$('.clocks.countdown').final_countdown({
 	            'start': seconds,
-	            'end': duration*60 + seconds,
-	            'now': seconds,       
-	            callback: function() { resetClock(); } 
-	        });
+	            'end': setupTime + seconds,
+	            'now': seconds},       
+	            resetClock, playSound 
+	        );
         });
 		$(".cbl").click(function() {
 			var t = $("div", this).text();
@@ -156,7 +158,8 @@
 		});
 
 		$(document).ready(function() {
-			sound = new Howl({urls: ['music/bell.wav']  });
+			endSound = new Howl({urls: ['music/templeBell.wav']  });
+			minSound = new Howl({urls: ['music/ting.wav']  });
 		});
 		
 	</script>
