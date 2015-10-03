@@ -21,8 +21,7 @@ body {
 
 
 
-.clocks { 
-	width: 1350px; 
+.clocks {  
 	height: 130px; 
 	position: absolute; 
 	top:0; bottom: 0;  
