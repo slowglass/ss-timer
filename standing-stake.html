@@ -151,9 +151,17 @@
 
 
 		$(document).ready(function() {
-			sounds.end =  new Audio("music/templeBell.wav");
-			sounds.minute =  new Audio("music/ting.wav");
-				
+			var href = $(location).attr('href');
+			if (href.startWith("file:"))
+			{
+				sounds.end =  new Audio("music/templeBell.wav");
+				sounds.minute =  new Audio("music/ting.wav");
+			}
+			else
+			{
+				sounds.end = new Howl({ urls: ["music/templeBell.wav"]});
+				sounds.minute = new Howl({ urls: ["music/ting.wav"]});
+			}
 			$(".repeat .btn").click(setRepeatCount);
 			$(".time .btn").click(startSS);
 			active($(".repeat .btn").first());
