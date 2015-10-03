@@ -112,6 +112,7 @@
 
     function dispatchTimer() {
         timer = {
+            duration: 0,
             minutes: 60 - Math.floor((settings.end - settings.now) / 60),
             seconds: 60 - Math.floor((settings.end - settings.now) % 60 )
         }
@@ -179,7 +180,7 @@
     }
 
     function startCounters() {        
-        var interval = setInterval( function() {                        
+        var interval = setInterval( function() {                     
             if (timer.seconds > 59 ) {
                 if (60 - timer.minutes == 0) {
                     clearInterval(interval);
@@ -188,7 +189,7 @@
                     }
                     return;
                 }
-                else
+                else if (timer.duration >0)
                 {
                     if (callbackFunction2 !== undefined) {
                         callbackFunction2.call(this); // brings the scope to the callback
@@ -208,7 +209,7 @@
             } else {            
                 timer.seconds++;
             }
-
+            timer.duration++;
             layerSeconds.draw();
         }, 1000);
     }

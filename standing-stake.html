@@ -1,6 +1,9 @@
 <html>
 	<head>
+
 		<link rel="stylesheet" href="jquery-ui.css">
+    	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    	<link rel="stylesheet" type="text/css" href="css/standing-stake.css">
 		<link rel="icon" type="image/x-icon" href="taichi.png" /> 
 
 		<link rel="apple-touch-icon" href="taichi.png" />
@@ -10,8 +13,6 @@
 		<link rel="apple-touch-icon" sizes="144x144" href="taichi_144.png" />
 
 		<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
-    	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    	<link rel="stylesheet" type="text/css" href="css/demo.css">
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="jquery-ui.js"></script>
@@ -24,24 +25,31 @@
 	</head>
 	<body>
 	<div class="buttons">
-		<div class="row">
-	        <a id="cb2" class="cbl"><img src="green_button.png" class="green" /><img src="violet_button.png" class="violet" /><div class="cb">2</div></a>
-	        <a id="cb3" class="cbl"><img src="green_button.png" class="green" /><img src="violet_button.png" class="violet" /><div class="cb">3</div></a>
-	        <a id="cb4" class="cbl"><img src="green_button.png" class="green" /><img src="violet_button.png" class="violet" /><div class="cb">4</div></a>
-	        <a id="cb5" class="cbl"><img src="green_button.png" class="green" /><img src="violet_button.png" class="violet" /><div class="cb">5</div></a>
-	    </div>
-		<div class="row">
-			<a id="b01" class="nl"><img src="grey_button.png" /><div class="n">1 </div></a>
-			<a id="b02" class="nl"><img src="grey_button.png" /><div class="n">2 </div></a>
-			<a id="b03" class="nl"><img src="grey_button.png" /><div class="n">5 </div></a>
-			<a id="b04" class="nl"><img src="grey_button.png" /><div class="n">10</div></a>
+		<div class="section group repeat">
+			<div class="col cell btn">2</div>
+			<div class="col cell btn">3</div>
+			<div class="col cell btn">4</div>
+			<div class="col cell btn">5</div>
 		</div>
-		<div class="row">
-	        <a id="b05" class="nl"><img src="grey_button.png" /><div class="n">20</div></a>
-	        <a id="b06" class="nl"><img src="grey_button.png" /><div class="n">30</div></a>
-	        <a id="b07" class="nl"><img src="grey_button.png" /><div class="n">45</div></a>
-	        <a id="b08" class="nl"><img src="grey_button.png" /><div class="n">60</div></a>
-	    </div>
+
+		<div class="section group time">
+			<div class="col cell btn">1</div>
+			<div class="col cell btn">2</div>
+			<div class="col cell btn">3</div>
+			<div class="col cell btn">4</div>
+		</div>
+		<div class="section group time">
+			<div class="col cell btn">5</div>
+			<div class="col cell btn">7</div>
+			<div class="col cell btn">10</div>
+			<div class="col cell btn">15</div>
+		</div>
+		<div class="section group time">
+			<div class="col cell btn">20</div>
+			<div class="col cell btn">30</div>
+			<div class="col cell btn">45</div>
+			<div class="col cell btn">60</div>
+		</div>
 	</div>
 	<div class="clocks">
 		<div class="countdown countdown-container container">
@@ -73,93 +81,83 @@
    		</div><!-- /.clock -->
 	</div>
 	<style>
-		html, body { margin: 0; padding: 0; }
-        .cb { position: absolute; top: 30px; font-family: cursive; font-size: 100px; color: #ffffff; }
-        .n  { position: absolute; top: 30px; font-family: cursive; font-size: 100px; color: #ffffff; }
-		#b01 div { left:  75px; }
-		#b02 div { left: 270px; }
-        #b03 div { left: 480px; }
-		#b04 div { left: 660px; }
-		#b05 div { left:  40px; }
-		#b06 div { left: 250px; }
-        #b07 div { left: 450px; }
-		#b08 div { left: 650px; }
-		#cb2 div { left:  70px; }
-		#cb3 div { left: 280px; }
-        #cb4 div { left: 480px; }
-		#cb5 div { left: 690px; }
-		.row { position: relative; }
-		.clocks { width: 1350px; height: 130px; position: absolute; top:0; bottom: 0;  left: 0;  right: 0;  margin: auto; }
 
 	</style>
 	<script type="text/javascript">
-		var endSound;
-		var minSound;
+		var minDur=60;
+		var settleTime=10;
+		var sounds = {};
 		var duration=0;
 		var repeats=2;
-		var deferred;
-		var colors;
-		var min=5;
-		var setupTime;
 
-		function playEndSound() { endSound.play(); }
-		function playSound() { minSound.play(); }
-		function resetClock() {
-			repeatCount++;
-			endSound();
-			if (repeatCount == repeats)
-			{
-				$(".clocks").hide();
-				$(".buttons").show();
-				console.log("Repeat: "+repeatCount);
-				console.log("Done:");
-			}
-			else
-			{
-				var seconds = new Date().getTime() / 1000;
-				$('.clocks.countdown').final_countdown({
-		            'start': seconds,
-		            'end': duration*min + seconds,
-		            'now': seconds},       
-		            resetClock, playSound 
-		        );
-				if (repeatCount == 0)
-					console.log("Setup: ");
-				else
-					console.log("Repeat: "+repeatCount);
-			}
+		function playEndSound() { console.log("Play End Sound"); sounds.end.play(); }
+		function playSound()    { console.log("Play Min Sound"); sounds.minute.play(); }
+		
+		function active(b)   { $(b).css({'background-color':'#29A329'}); }
+		function inactive(b) { $(b).css({'background-color':'#7A29CC'}); }
+
+		function setRepeatCount() { 
+			$(".repeat .btn").each(function() { inactive(this); })
+			active(this);
+			repeats = 0+$(this).text(); 
 		}
-		$(".cbl .green").hide();
-		$("#cb2 .violet").hide();
-		$("#cb2 .green").show();
-		$(".clocks").hide();
-		$(".nl").click(function() { 
-			var t = $("div", this).text();
-			duration = t * 1;
-			$(".clocks").show();
-			$(".buttons").hide();
+
+		function setupMode() { $(".clocks").hide();	$(".buttons").show(); }
+		function runMode()   { $(".clocks").show();	$(".buttons").hide(); }
+
+		function startClock(dur) {
+			if (repeatCount == 0)
+				console.log("Settle: ");
+			else
+				console.log("Repeat: "+repeatCount);
 
 			var seconds = new Date().getTime() / 1000;
-			repeatCount=-1;
-	    	$('.clocks.countdown').final_countdown({
+			$('.clocks.countdown').final_countdown({
 	            'start': seconds,
-	            'end': setupTime + seconds,
+	            'end': dur + seconds,
 	            'now': seconds},       
 	            resetClock, playSound 
 	        );
-        });
-		$(".cbl").click(function() {
-			var t = $("div", this).text();
-			$(".cbl .green").hide();
-			$(".cbl .violet").show();
-			$(".violet", this).hide();
-			$(".green", this).show();
-			repeats=t*1;
-		});
+			
+		}
+
+		function resetClock(start) {
+			repeatCount++;
+			playEndSound();
+			if (repeatCount == repeats)
+			{
+				setupMode
+				console.log("Repeat: "+repeatCount);
+			}
+			else
+			{
+				startClock(duration*minDur);
+			}
+		}
+
+		function startSS()
+		{
+			duration = 0+$(this).text();
+			runMode();
+			repeatCount=-1;
+			startClock(settleTime);
+		}
+
+		if ( typeof String.prototype.startsWith != 'function' ) {
+		  String.prototype.startsWith = function( str ) {
+		    return this.substring( 0, str.length ) === str;
+		  }
+		};
+
 
 		$(document).ready(function() {
-			endSound = new Howl({urls: ['music/templeBell.wav']  });
-			minSound = new Howl({urls: ['music/ting.wav']  });
+			sounds.end =  new Audio("music/templeBell.wav");
+			sounds.minute =  new Audio("music/ting.wav");
+				
+			$(".repeat .btn").click(setRepeatCount);
+			$(".time .btn").click(startSS);
+			active($(".repeat .btn").first());
+			setupMode();
 		});
 		
 	</script>

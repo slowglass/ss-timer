@@ -1,0 +1,148 @@
+html, body {
+	height: 100%;
+}
+
+html {
+	background-image: url('../img/yin-yang-1000.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;	
+	margin: 0; padding: 0;
+}
+
+body {
+	background-color: rgba(44,62,80 , 0.6 );
+	background-image: url('../img/pattern.png');
+	background-position: center;
+	background-repeat: repeat;
+	font-family: 'Raleway', 'Arial', sans-serif;
+	margin: 0; padding: 0;
+}
+
+
+
+.clocks { 
+	width: 1350px; 
+	height: 130px; 
+	position: absolute; 
+	top:0; bottom: 0;  
+	left: 0;  right: 0;  
+	margin: auto; 
+}
+
+/************************************************************************************
+ * Grid layout
+ ************************************************************************************/
+.section {
+	clear: both;
+	margin-left: 5%;
+	margin-right: 5%;
+	padding: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 5%;
+	border-radius: 25px;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+
+/*  GRID OF FOUR  */
+.cell    {	width: 21.25%; }
+.cells_2 {	width: 47.5%;  }
+.cells_3 {	width: 73.75%; }
+.cells_4 {	width: 100%;   }
+
+
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 680px) {
+	.col {  margin: 1% 0 1% 0%; }
+	.cell, .cells_2, .cells_3, .cells_4 { width: 100%; }
+}
+
+
+
+/************************************************************************************
+ * 
+ ************************************************************************************/
+.col {
+	color:white;
+	font-family: cursive;
+	font-size: 100px;
+	text-align: center;
+	opacity: 0.6;
+}
+
+.col:hover {
+	opacity: 1.0;
+	color:white;
+}
+
+.repeat .col { background-color:  #7A29CC; }
+
+.time .col {background-color:  #808080; }
+
+
+.countdown-container {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	transform: translateY(-50%);
+
+}
+
+.clock-item .inner {
+	height: 0px;
+	padding-bottom: 100%;
+	position: relative;	
+	width: 100%;
+}
+
+.clock-canvas {
+	background-color: rgba(255, 255, 255, .1);
+	border-radius: 50%;
+	height: 0px;
+	padding-bottom: 100%;
+}
+
+.text {
+	color: #fff;	
+	font-size: 30px;
+	font-weight: bold;	
+	margin-top: -50px;
+	position: absolute;
+	top: 50%;
+	text-align: center;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+	width: 100%;
+}
+
+.text .val {
+	font-size: 50px;
+}
+
+.text .type-time {
+	font-size: 20px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.clock-item {
+		margin-bottom: 30px;		
+	}
+}
+
+@media (max-width: 767px) {
+	.clock-item {
+		margin: 0px 30px 30px 30px;
+	}
+}
