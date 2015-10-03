@@ -151,8 +151,9 @@
 
 
 		$(document).ready(function() {
-			var href = $(location).attr('href');
-			if (href.startWith("file:"))
+			var href = ""+$(location).attr('href');
+
+			if (href.substring( 0, "file:".length ) === "file:")
 			{
 				sounds.end =  new Audio("music/templeBell.wav");
 				sounds.minute =  new Audio("music/ting.wav");
