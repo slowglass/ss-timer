@@ -18,6 +18,7 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="jquery-ui.js"></script>
 		<script src="howler.js"></script>
+		<script src="NoSleep.js"></script>
 
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="js/kinetic.js"></script>
@@ -98,11 +99,13 @@
 
 	</style>
 	<script type="text/javascript">
+		var noSleep = new NoSleep();
 		var minDur=60;
 		var settleTime=10;
 		var sounds = {};
 		var duration=0;
 		var repeats=2;
+
 
 		function playEndSound() { console.log("Play End Sound"); sounds.end.play(); }
 		function playSound()    { console.log("Play Min Sound"); sounds.minute.play(); }
@@ -140,8 +143,10 @@
 			playEndSound();
 			if (repeatCount == repeats)
 			{
-				setupMode
+				setupMode();
 				console.log("Repeat: "+repeatCount);
+				noSleep.disable();
+				console.log("Sleep: Enabled");
 			}
 			else
 			{
@@ -155,10 +160,16 @@
 			runMode();
 			repeatCount=-1;
 			startClock(settleTime);
+			console.log("Sleep: Disabled");
+			noSleep.enable();
 		}
 
 		$(document).ready(function() {
-			var href = ""+$(location).attr('href');
+			var href = ""+$(location).attr('href');			
+			//var overrideMinDur=$(location).attr('duration');
+
+			//if (overrideMinDur != "") minDur=0+overrideMinDur;
+
 
 			if (href.substring( 0, "file:".length ) === "file:")
 			{
