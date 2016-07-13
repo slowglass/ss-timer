@@ -40,12 +40,31 @@
 		<script src="nd2settings.js"></script>
 
 		<script>
-
+var count=0;
+var labels = [];
+var d1 = [];
+var d2 = [];
+var d3 = [];
 function deviceOrientationListener(event) {
      var dir=event.alpha;
      var tilt=event.beta;
      var yaw=event.gamma;
-     $("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw+"</p>");
+     count = count++;
+     labels.push(count);
+     d1.push(dir);
+     d2.push(tilt);
+     d3.push(yaw);
+     if (count==100)
+     {
+	window.removeEventListener("deviceorientation", deviceOrientationListener);
+        var chart = new Chartist.Line('#myFirstChart', {
+           labels: labels,
+           series: [ d1, d2, d3]
+        });
+
+        return;
+     }
+     //$("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw+"</p>");
 }
 
 if (window.DeviceOrientationEvent) {
