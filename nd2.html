@@ -45,6 +45,15 @@ var labels = [];
 var d1 = [];
 var d2 = [];
 var d3 = [];
+var options = {
+  showLine: false,
+  axisX: {
+    labelInterpolationFnc: function(value, index) {
+      return index % 25 === 0 ? value : null;
+    }
+  }
+};
+
 function deviceOrientationListener(event) {
      var dir=event.alpha;
      var tilt=event.beta;
@@ -60,7 +69,9 @@ function deviceOrientationListener(event) {
         var chart = new Chartist.Line('#myFirstChart', {
            labels: labels,
            series: [ d2, d3]
-        });
+        },
+	options
+	);
 
         return;
      }
