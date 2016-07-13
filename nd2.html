@@ -19,12 +19,6 @@
 
 		<div data-role="page">
 
-			<nd2-include data-src="misc/panel.left.html"></nd2-include>
-
-			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
-				<nd2-include data-src="misc/bottom.sheet.html"></nd2-include>
-			</div>
-
 			<div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
 				<a href="#bottomsheet" class="ui-btn ui-btn-right wow fadeIn" data-wow-delay='1.2s'><i class="zmdi zmdi-more-vert"></i></a>
 				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
@@ -32,9 +26,9 @@
 			</div>
 
 			<div role="main" class="ui-content" data-inset="false">
-				<p>(home)</p>
+				<div id='myFirstChart' class="nd2-chart clr-theme-lime"></div>
 			</div>
-
+			<div id="log" />
 		</div>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -44,6 +38,25 @@
 		<script src="vendor/wow/wow.min.js"></script>
 		<script src="js/nativedroid2.js"></script>
 		<script src="nd2settings.js"></script>
+
+		<script>
+
+function deviceOrientationListener(event) {
+     var dir=event.alpha;
+     var tilt=event.beta;
+     var yaw=event.gamma;
+     $("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw</p>");
+}
+
+if (window.DeviceOrientationEvent) {
+   window.addEventListener("deviceorientation", deviceOrientationListener);
+}
+else {
+    alert("Sorry, your browser doesn't support Device Orientation");
+}
+
+
+</script> 
 
 	</body>
 </html>
