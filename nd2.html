@@ -40,7 +40,6 @@
 		<script src="nd2settings.js"></script>
 
 		<script>
-var count=0;
 var labels = [];
 var d1 = [];
 var d2 = [];
@@ -49,7 +48,7 @@ function deviceOrientationListener(event) {
      var dir=event.alpha;
      var tilt=event.beta;
      var yaw=event.gamma;
-     count = count++;
+     count = labels.length;
      labels.push(count);
      d1.push(dir);
      d2.push(tilt);
