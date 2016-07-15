@@ -133,13 +133,13 @@ function mkGraph()
 			// assign the X function to plot our line as we wish
 			.x(function(d,i) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting X1 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				console.log('Plotting -X1 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
 				// return the X coordinate where we want to plot this datapoint
 				return x(i); 
 			})
 			.y(function(d) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting Y1 value for data point: ' + d + ' to be at: ' + y1(d) + " using our y1Scale.");
+				console.log('Plotting -Y1 value for data point: ' + d + ' to be at: ' + y1(d) + " using our y1Scale.");
 				// return the Y coordinate where we want to plot this datapoint
 				return y1(d); 
 			})
@@ -149,13 +149,13 @@ function mkGraph()
 			// assign the X function to plot our line as we wish
 			.x(function(d,i) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting X2 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				console.log('Plotting -X2 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
 				// return the X coordinate where we want to plot this datapoint
 				return x(i); 
 			})
 			.y(function(d) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting Y2 value for data point: ' + d + ' to be at: ' + y1(d) + " using our y1Scale.");
+				console.log('Plotting -Y2 value for data point: ' + d + ' to be at: ' + y1(d) + " using our y1Scale.");
 				// return the Y coordinate where we want to plot this datapoint
 				return y2(d); 
 			})
@@ -165,13 +165,13 @@ function mkGraph()
 			// assign the X function to plot our line as we wish
 			.x(function(d,i) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting X2 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				console.log('Plotting -X3 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
 				// return the X coordinate where we want to plot this datapoint
 				return x(i); 
 			})
 			.y(function(d) { 
 				// verbose logging to show what's actually being done
-				console.log('Plotting Y3 value for data point: ' + d + ' to be at: ' + y2(d) + " using our y2Scale.");
+				console.log('Plotting -Y3 value for data point: ' + d + ' to be at: ' + y2(d) + " using our y2Scale.");
 				// return the Y coordinate where we want to plot this datapoint
 				return y2(d); 
 			})
