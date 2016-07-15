@@ -4,8 +4,8 @@
 		<title>nativeDroid II - jQueryMobile Template</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 		<link rel="stylesheet" href="vendor/waves/waves.min.css" />
 		<link rel="stylesheet" href="vendor/wow/animate.css" />
 		<link rel="stylesheet" href="css/nativedroid2.css" />
@@ -82,15 +82,15 @@
 				fill: steelblue;
 			}
 		</style>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 		<script src="vendor/chartist/chartist.min.js"></script>
 		<script src="vendor/waves/waves.min.js"></script>
 		<script src="vendor/wow/wow.min.js"></script>
 		<script src="js/nativedroid2.js"></script>
 		<script src="nd2settings.js"></script>
-		<script src="//d3js.org/d3.v3.min.js"></script>
+		<script src="https://d3js.org/d3.v3.min.js"></script>
 
 		<script>
     $(document).bind('mobileinit',function(){
@@ -114,41 +114,32 @@ function mkGraph()
 		var m = [80, 80, 80, 80]; // margins
 		var w = 400 - m[1] - m[3];	// width
 		var h = 600 - m[0] - m[2]; // height
-		
-		
-		// X scale will fit all values from data[] within pixels 0-w
-		var x = d3.scale.linear().domain([0, data1.length]).range([0, w]);
-		
-		// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-		var y1 = d3.scale.linear().domain([-20, 20]).range([h, 0]); // in real world the domain would be dynamically calculated from the data
-		var y2 = d3.scale.linear().domain([-180, 180]).range([h, 0]);  // in real world the domain would be dynamically calculated from the data
-			// automatically determining max range can work something like this
-			// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
 
+		var x = d3.scale.linear().domain([0, data1.length]).range([0, w]);
+		var y1 = d3.scale.linear().domain([-20, 20]).range([h, 0]); 
+		var y2 = d3.scale.linear().domain([-180, 180]).range([h, 0]);  
+			
 		// create a line function that can convert data[] into x and y points
 		var line1 = d3.svg.line()
-			// assign the X function to plot our line as we wish
 			.x(function(d,i) { return x(i); })
-			.y(function(d) { return y1(d); })
+			.y(function(d) { console.log("#1# "+y1(d)); return y1(d); });
 			
 		// create a line function that can convert data[] into x and y points
 		var line2 = d3.svg.line()
-			// assign the X function to plot our line as we wish
 			.x(function(d,i) { return x(i); })
-			.y(function(d) { return y2(d); 	})
+			.y(function(d) { console.log("#2# "+y1(d)); return y1(d); 	});
 
 		// create a line function that can convert data[] into x and y points
 		var line3 = d3.svg.line()
-			// assign the X function to plot our line as we wish
 			.x(function(d,i) { return x(i); })
-			.y(function(d) { return y2(d); })
+			.y(function(d) { console.log("#3# "+y1(d)); return y1(d); });
 
 
 			// Add an SVG element with the desired dimensions and margin.
 			var graph = d3.select("#graph").append("svg:svg")
 			      .attr("width", w + m[1] + m[3])
 			      .attr("height", h + m[0] + m[2])
-			    .append("svg:g")
+			      .append("svg:g")
 			      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 			// create yAxis
@@ -178,9 +169,9 @@ function mkGraph()
 			
 			// add lines
 			// do this AFTER the axes above so that the line is above the tick-lines
+  			graph.append("svg:path").attr("d", line1(data3)).attr("class", "data3");
   			graph.append("svg:path").attr("d", line1(data1)).attr("class", "data1");
-  			graph.append("svg:path").attr("d", line2(data2)).attr("class", "data2");
-  			graph.append("svg:path").attr("d", line3(data3)).attr("class", "data3");
+  			graph.append("svg:path").attr("d", line1(data2)).attr("class", "data2");
 }
 
 function deviceOrientationListener(event) {
@@ -194,8 +185,8 @@ function deviceOrientationListener(event) {
      data2.push(m.yaw);
      data3.push(m.dir);
 
-     console.log("## "+m.tilt + ",   "+m.yaw);
-     if (m.count==100)
+     console.log("## "+m.tilt + ",   "+m.yaw+",   "+m.dir);
+     if (m.count==1000)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         mkGraph();
