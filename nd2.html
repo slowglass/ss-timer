@@ -103,6 +103,7 @@
 var lineData = [];
 var data1 = [];
 var data2 = [];
+var data3 = [];
 
 function mkGraph()
 {
@@ -122,8 +123,8 @@ function mkGraph()
 		var x = d3.scale.linear().domain([0, data1.length]).range([0, w]);
 		
 		// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-		var y1 = d3.scale.linear().domain([-180, 180]).range([h, 0]); // in real world the domain would be dynamically calculated from the data
-		var y2 = d3.scale.linear().domain([-100, 100]).range([h, 0]);  // in real world the domain would be dynamically calculated from the data
+		var y1 = d3.scale.linear().domain([-20, 20]).range([h, 0]); // in real world the domain would be dynamically calculated from the data
+		var y2 = d3.scale.linear().domain([-180, 180]).range([h, 0]);  // in real world the domain would be dynamically calculated from the data
 			// automatically determining max range can work something like this
 			// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
 
@@ -156,7 +157,23 @@ function mkGraph()
 				// verbose logging to show what's actually being done
 				console.log('Plotting Y2 value for data point: ' + d + ' to be at: ' + y1(d) + " using our y1Scale.");
 				// return the Y coordinate where we want to plot this datapoint
-				return y1(d); 
+				return y2(d); 
+			})
+
+		// create a line function that can convert data[] into x and y points
+		var line3 = d3.svg.line()
+			// assign the X function to plot our line as we wish
+			.x(function(d,i) { 
+				// verbose logging to show what's actually being done
+				console.log('Plotting X2 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				// return the X coordinate where we want to plot this datapoint
+				return x(i); 
+			})
+			.y(function(d) { 
+				// verbose logging to show what's actually being done
+				console.log('Plotting Y3 value for data point: ' + d + ' to be at: ' + y2(d) + " using our y2Scale.");
+				// return the Y coordinate where we want to plot this datapoint
+				return y2(d); 
 			})
 
 
@@ -184,11 +201,19 @@ function mkGraph()
 			      .attr("transform", "translate(-15,0)")
 			      .call(yAxisLeft);
 
-	  					
+	  		// create right yAxis
+	  		var yAxisRight = d3.svg.axis().scale(y2).ticks(6).orient("right");
+  			// Add the y-axis to the right
+  			graph.append("svg:g")
+  			      .attr("class", "y axis axisRight")
+  			      .attr("transform", "translate(" + (w+15) + ",0)")
+  			      .call(yAxisRight);
+			
 			// add lines
 			// do this AFTER the axes above so that the line is above the tick-lines
   			graph.append("svg:path").attr("d", line1(data1)).attr("class", "data1");
   			graph.append("svg:path").attr("d", line2(data2)).attr("class", "data2");
+  			graph.append("svg:path").attr("d", line3(data3)).attr("class", "data3");
 }
 
 function deviceOrientationListener(event) {
@@ -200,6 +225,7 @@ function deviceOrientationListener(event) {
      lineData.push(m);
      data1.push(m.tilt);
      data2.push(m.yaw);
+     data2.push(m.dir);
 
      console.log("## "+m.tilt + ",   "+m.yaw);
      if (m.count==100)
