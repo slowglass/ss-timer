@@ -215,13 +215,14 @@ function setMax(key, maxV, v, d) {
 	if (Math.abs(v) > maxV.v) { 
 		maxV.v = Math.abs(v); 
 		maxV.d=d;
-		$(key + ' span.v').text(maxV.v);
-    	$(key + ' span.d').text(maxV.d);
+		$(key + ' span.v').text(Math.round(maxV.v));
+    	$(key + ' span.d').text(Math.round(maxV.d));
     }
 }
 
 function deviceOrientationListener(event) {
 	 var m = {};
+	 var alpha = (alpha > 180) ? alpha-360 : alpha;
      m.dir=event.alpha; // -180 = +180
      m.tilt=event.beta; // -180 = +180
      m.yaw=event.gamma; // - 90 - + 90
