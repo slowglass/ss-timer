@@ -221,9 +221,8 @@ function setMax(key, maxV, v, d) {
 }
 
 function deviceOrientationListener(event) {
-	 var m = {};
 	 var alpha = (alpha > 180) ? alpha-360 : alpha;
-     m.count = dataA.length;
+     var count = dataA.length;
      dataA.push(alpha);
      dataB.push(event.beta);
      dataG.push(event.gamma);
@@ -232,7 +231,7 @@ function deviceOrientationListener(event) {
      setMax("#maxG", maxG, event.gamma, alpha);
      setMax("#maxA", maxA, event.alpha, alpha);
 
-     if (m.count==400)
+     if (count==400)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         populateGraph("#graphB", "dataB", dataB, 180, true,  true);
