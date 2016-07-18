@@ -194,7 +194,7 @@ function deviceOrientationListener(event) {
      setMax("#maxtilt", maxTilt, m.tilt, m.dir);
      console.log("## "+m.tilt + ",   "+m.yaw+",   "+m.dir);
 
-     if (m.count==100)
+     if (m.count==400)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         mkGraph();
