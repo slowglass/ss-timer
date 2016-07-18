@@ -26,9 +26,9 @@
 			</div>
 			<a id="start" href="#" class="ui-btn ui-btn-icon-left"><i class='zmdi zmdi-plus'></i> Start</a>
 			<div role="main" class="ui-content" data-inset="false">
-				<svg id="graphB" width="400" height="100"></svg>
-				<svg id="graphG" width="400" height="100"></svg>
-				<svg id="graphA" width="400" height="100"></svg>
+				<svg id="graphB" width="400" height="90"></svg>
+				<svg id="graphG" width="400" height="90"></svg>
+				<svg id="graphA" width="400" height="90"></svg>
 			</div>
 			<div>
 				<div id="maxA"><span class="l">Max Alpha: </span><span class="v"></span> [<span class="d"></span>]</div>
@@ -116,9 +116,9 @@
 function populateGraph(graph, label, data, range, showLine, showAxis)
 {	
 		// define dimensions of graph
-		var m = [80, 80, 80, 80]; // margins
+		var m = [10, 5, 15, 5]; // margins
 		var w = 400 - m[1] - m[3];	// width
-		var h = 100 - m[0] - m[2]; // height
+		var h = 90 - m[0] - m[2]; // height
 
 		var x     = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
 		var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
@@ -159,7 +159,7 @@ function populateGraph(graph, label, data, range, showLine, showAxis)
 function mkGraph()
 {	
 		// define dimensions of graph
-		var m = [80, 80, 80, 80]; // margins
+		var m = [80, 0, 80, 0]; // margins
 		var w = 400 - m[1] - m[3];	// width
 		var h = 100 - m[0] - m[2]; // height
 
@@ -231,7 +231,7 @@ function deviceOrientationListener(event) {
      setMax("#maxG", maxG, event.gamma, alpha);
      setMax("#maxA", maxA, event.alpha, alpha);
 
-     if (count==400)
+     if (count==40)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         populateGraph("#graphB", "dataB", dataB, 180, true,  true);
