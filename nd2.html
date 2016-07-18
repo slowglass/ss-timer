@@ -26,7 +26,9 @@
 			</div>
 
 			<div role="main" class="ui-content" data-inset="false">
-				<svg id="graph" width="400" height="600"></svg>
+				<svg id="graphB" width="400" height="100"></svg>
+				<svg id="graphG" width="400" height="100"></svg>
+				<svg id="graphA" width="400" height="100"></svg>
 			</div>
 			<div>
 				<div id="maxB"><span class="l">Max Beta: </span><span class="v"></span> [<span class="d"></span>]</div>
@@ -112,12 +114,55 @@ var dataA = [];
 var dataB = [];
 var dataG = [];
 
+function populateGraph(graph, label, data, range, showLine, showAxis)
+{	
+		// define dimensions of graph
+		var m = [80, 80, 80, 80]; // margins
+		var w = 400 - m[1] - m[3];	// width
+		var h = 100 - m[0] - m[2]; // height
+
+		var x     = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
+		var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
+			
+		var d3l = d3.svg.line()
+			.x(function(d,i) { return x(i); })
+			.y(function(d)   { return y(d); });
+		
+		// Add an SVG element with the desired dimensions and margin.
+		var graph = d3.select(graph).append("svg:svg")
+		      .attr("width", w + m[1] + m[3])
+		      .attr("height", h + m[0] + m[2])
+		      .append("svg:g")
+		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+		if (showAxis)
+		{
+			var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
+			graph.append("svg:g")
+			      .attr("class", "x axis")
+			      .attr("transform", "translate(0," + h + ")")
+			      .call(xAxis);
+		}
+
+
+		if (showLine)
+			graph.append("svg:path").attr("d", d3l(data)).attr("class", label);
+		else
+			graph.selectAll("dot")
+	        	.data(data)
+	      		.enter().append("circle")
+	      	        .attr("r", 0.7)
+	        		.attr("cx", function(d, i) { return x(i); })
+	       			.attr("cy", function(d) { return y(d); });
+		
+}
+
 function mkGraph()
 {	
 		// define dimensions of graph
 		var m = [80, 80, 80, 80]; // margins
 		var w = 400 - m[1] - m[3];	// width
-		var h = 600 - m[0] - m[2]; // height
+		var h = 100 - m[0] - m[2]; // height
 
 		var x     = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
 		var y90   = d3.scale.linear().domain([ -90,  90]).range([h, 0]); 
@@ -148,14 +193,14 @@ function mkGraph()
 
 		// add lines
 		// do this AFTER the axes above so that the line is above the tick-lines
-		graph.append("svg:path").attr("d", line180(dataA)).attr("class", "dataA");
+		//graph.append("svg:path").attr("d", line180(dataA)).attr("class", "dataA");
 		graph.append("svg:path").attr("d", line180(dataB)).attr("class", "dataB");
 		graph.append("svg:path").attr("d", line90(dataG)).attr("class", "dataG");
 
 		graph.selectAll("dot")
-        	.data(data3)
+        	.data(dataA)
       		.enter().append("circle")
-      	        .attr("r", 3.5)
+      	        .attr("r", 0.7)
         		.attr("cx", function(d, i) { return x(i); })
        			.attr("cy", function(d) { return y180(d); });
 		
@@ -186,11 +231,13 @@ function deviceOrientationListener(event) {
      setMax("#maxB", maxB, event.beta, event.alpha);
      setMax("#maxG", maxG, event.gamma, event.alpha);
 
-     if (m.count==15)
+     if (m.count==40)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         mkGraph();
-        return;
+        populateGraph("#graphB", "dataB", dataB, 180, true,  true);
+        populateGraph("#graphG", "dataG", dataG,  90, true,  true);
+        populateGraph("#graphA", "dataA", dataA, 180, false, true);
      }
      //$("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw+"</p>");
 }
