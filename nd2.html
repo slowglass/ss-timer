@@ -31,9 +31,9 @@
 				<svg id="graphA" width="340" height="90"></svg>
 			</div>
 			<div>
-				<div id="maxA"><span class="l">Max Alpha: </span><span class="v"></span> [<span class="d"></span>]</div>
-				<div id="maxB"><span class="l">Max Beta: </span><span class="v"></span> [<span class="d"></span>]</div>
-				<div id="maxG"><span class="l">Max Gamma: </span><span class="v"></span> [<span class="d"></span>]</div>
+				<span id="maxA"><span class="l">Alpha: </span><span class="v"></span> [<span class="d"></span>]</span>
+				<span id="maxB"><span class="l"> | Beta: </span><span class="v"></span> [<span class="d"></span>]</span>
+				<span id="maxG"><span class="l"> | Gamma: </span><span class="v"></span> [<span class="d"></span>]</span>
 			</div>
 			<div id="log" />
 
@@ -231,7 +231,7 @@ function deviceOrientationListener(event) {
      setMax("#maxG", maxG, event.gamma, alpha);
      setMax("#maxA", maxA, event.alpha, alpha);
 
-     if (count==40)
+     if (count==400)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         populateGraph("#graphB", "dataB", dataB, 180, true,  true);
