@@ -28,6 +28,10 @@
 			<div role="main" class="ui-content" data-inset="false">
 				<svg id="graph" width="400" height="600"></svg>
 			</div>
+			<div>
+				<div id="maxyaw"><span class="l">Max Yaw: </span><span class="v"></span> [<span class="d"></span>]</div>
+				<div id="maxtilt"><span class="l">Max Tilt: </span><span class="v"></span> [<span class="d"></span>]</div>
+			</div>
 			<div id="log" />
 		</div>
 		<style>
@@ -43,6 +47,10 @@
 
 			.data2 {
 				stroke: orange;
+			}
+
+			.data3 {
+				stroke: green;
 			}
 
 			.axis {
@@ -116,62 +124,59 @@ function mkGraph()
 		var h = 600 - m[0] - m[2]; // height
 
 		var x = d3.scale.linear().domain([0, data1.length]).range([0, w]);
-		var y1 = d3.scale.linear().domain([-20, 20]).range([h, 0]); 
+		var y1 = d3.scale.linear().domain([-50, 50]).range([h, 0]); 
 		var y2 = d3.scale.linear().domain([-180, 180]).range([h, 0]);  
 			
 		// create a line function that can convert data[] into x and y points
 		var line1 = d3.svg.line()
 			.x(function(d,i) { return x(i); })
-			.y(function(d) { console.log("#1# "+y1(d)); return y1(d); });
+			.y(function(d) { return y1(d); });
 			
-		// create a line function that can convert data[] into x and y points
-		var line2 = d3.svg.line()
-			.x(function(d,i) { return x(i); })
-			.y(function(d) { console.log("#2# "+y1(d)); return y1(d); 	});
+		
+		// Add an SVG element with the desired dimensions and margin.
+		var graph = d3.select("#graph").append("svg:svg")
+		      .attr("width", w + m[1] + m[3])
+		      .attr("height", h + m[0] + m[2])
+		      .append("svg:g")
+		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-		// create a line function that can convert data[] into x and y points
-		var line3 = d3.svg.line()
-			.x(function(d,i) { return x(i); })
-			.y(function(d) { console.log("#3# "+y1(d)); return y1(d); });
+		// create yAxis
+		var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
+		// Add the x-axis.
+		graph.append("svg:g")
+		      .attr("class", "x axis")
+		      .attr("transform", "translate(0," + h + ")")
+		      .call(xAxis);
 
+		// create left yAxis
+		var yAxisLeft = d3.svg.axis().scale(y1).ticks(4).orient("left");
+		// Add the y-axis to the left
+		graph.append("svg:g")
+		      .attr("class", "y axis axisLeft")
+		      .attr("transform", "translate(-15,0)")
+		      .call(yAxisLeft);
 
-			// Add an SVG element with the desired dimensions and margin.
-			var graph = d3.select("#graph").append("svg:svg")
-			      .attr("width", w + m[1] + m[3])
-			      .attr("height", h + m[0] + m[2])
-			      .append("svg:g")
-			      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+		// add lines
+		// do this AFTER the axes above so that the line is above the tick-lines
+		graph.append("svg:path").attr("d", line1(data3)).attr("class", "data3");
+		graph.append("svg:path").attr("d", line1(data1)).attr("class", "data1");
+		graph.append("svg:path").attr("d", line1(data2)).attr("class", "data2");
 
-			// create yAxis
-		    var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
-			// Add the x-axis.
-			graph.append("svg:g")
-			      .attr("class", "x axis")
-			      .attr("transform", "translate(0," + h + ")")
-			      .call(xAxis);
+		console.log("##1: " + JSON.stringify(data1));
+		console.log("##2: " + JSON.stringify(data2));
+		console.log("##3: " + JSON.stringify(data3));
+}
 
+var maxTilt = { v: 0, d: null };
+var maxYaw = { v: 0, d: null };
 
-			// create left yAxis
-			var yAxisLeft = d3.svg.axis().scale(y1).ticks(4).orient("left");
-			// Add the y-axis to the left
-			graph.append("svg:g")
-			      .attr("class", "y axis axisLeft")
-			      .attr("transform", "translate(-15,0)")
-			      .call(yAxisLeft);
-
-	  		// create right yAxis
-	  		var yAxisRight = d3.svg.axis().scale(y2).ticks(6).orient("right");
-  			// Add the y-axis to the right
-  			graph.append("svg:g")
-  			      .attr("class", "y axis axisRight")
-  			      .attr("transform", "translate(" + (w+15) + ",0)")
-  			      .call(yAxisRight);
-			
-			// add lines
-			// do this AFTER the axes above so that the line is above the tick-lines
-  			graph.append("svg:path").attr("d", line1(data3)).attr("class", "data3");
-  			graph.append("svg:path").attr("d", line1(data1)).attr("class", "data1");
-  			graph.append("svg:path").attr("d", line1(data2)).attr("class", "data2");
+function setMax(key, maxV, v, d) {
+	if (Math.abs(v) > maxV.v) { 
+		maxV.v = Math.abs(v); 
+		maxV.d=d;
+		$(key + ' span.v').text(maxV.v);
+    	$(key + ' span.d').text(maxV.d);
+    }
 }
 
 function deviceOrientationListener(event) {
@@ -185,8 +190,11 @@ function deviceOrientationListener(event) {
      data2.push(m.yaw);
      data3.push(m.dir);
 
+     setMax("#maxyaw", maxYaw, m.yaw, m.dir);
+     setMax("#maxtilt", maxTilt, m.tilt, m.dir);
      console.log("## "+m.tilt + ",   "+m.yaw+",   "+m.dir);
-     if (m.count==1000)
+
+     if (m.count==100)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
         mkGraph();
