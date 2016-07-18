@@ -167,7 +167,7 @@ function mkGraph()
       		.enter().append("circle")
       	        .attr("r", 3.5)
         		.attr("cx", function(d, i) { return x(i); })
-       			.attr("cy", function(d) { return y1(d)/4; });
+       			.attr("cy", function(d) { return (y1(d) -180)/4; });
 		console.log("##1: " + JSON.stringify(data1));
 		console.log("##2: " + JSON.stringify(data2));
 		console.log("##3: " + JSON.stringify(data3));
