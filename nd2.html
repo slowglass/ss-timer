@@ -223,17 +223,14 @@ function setMax(key, maxV, v, d) {
 function deviceOrientationListener(event) {
 	 var m = {};
 	 var alpha = (alpha > 180) ? alpha-360 : alpha;
-     m.dir=event.alpha; // -180 = +180
-     m.tilt=event.beta; // -180 = +180
-     m.yaw=event.gamma; // - 90 - + 90
      m.count = dataA.length;
-     dataA.push(event.alpha);
+     dataA.push(alpha);
      dataB.push(event.beta);
      dataG.push(event.gamma);
 
-     setMax("#maxB", maxB, event.beta, event.alpha);
-     setMax("#maxG", maxG, event.gamma, event.alpha);
-     setMax("#maxA", maxA, event.alpha, event.alpha);
+     setMax("#maxB", maxB, event.beta, alpha);
+     setMax("#maxG", maxG, event.gamma, alpha);
+     setMax("#maxA", maxA, event.alpha, alpha);
 
      if (m.count==400)
      {
