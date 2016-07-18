@@ -221,7 +221,7 @@ function setMax(key, maxV, v, d) {
 }
 
 function deviceOrientationListener(event) {
-	 var alpha = (alpha > 180) ? alpha-360 : alpha;
+	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
      var count = dataA.length;
      dataA.push(alpha);
      dataB.push(event.beta);
