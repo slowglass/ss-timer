@@ -158,10 +158,16 @@ function mkGraph()
 
 		// add lines
 		// do this AFTER the axes above so that the line is above the tick-lines
-		graph.append("svg:path").attr("d", line1(data3)).attr("class", "data3");
+		//graph.append("svg:path").attr("d", line1(data3)).attr("class", "data3");
 		graph.append("svg:path").attr("d", line1(data1)).attr("class", "data1");
 		graph.append("svg:path").attr("d", line1(data2)).attr("class", "data2");
 
+		graph.selectAll("dot")
+        	.data(data3)
+      		.enter().append("circle")
+      	        .attr("r", 3.5)
+        		.attr("cx", function(d, i) { return x(i); })
+       			.attr("cy", function(d) { return y1(d)/4; });
 		console.log("##1: " + JSON.stringify(data1));
 		console.log("##2: " + JSON.stringify(data2));
 		console.log("##3: " + JSON.stringify(data3));
