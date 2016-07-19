@@ -93,6 +93,10 @@
 			.y.axisLeft text {
 				fill: steelblue;
 			}
+
+			#graphB .axis text { display: none; }
+			#graphG .axis text { display: none; }
+			div.ui-content { padding: 0;}
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -115,8 +119,17 @@
 
 function populateGraph(graph, label, data, range, showLine, showAxis)
 {	
+		var m = [0, 5, 15, 5]; // margins
+		if (range == null)
+		{
+			var mx = Math.max.apply(null, data);
+			var mn = Math.min.apply(null, data);
+			range = Math.max(mx, -1*mn)*1.1;
+			m = [0, 5, 0, 5];
+		}
+
 		// define dimensions of graph
-		var m = [10, 5, 15, 5]; // margins
+		
 		var w = 340 - m[1] - m[3];	// width
 		var h = 90 - m[0] - m[2]; // height
 
@@ -234,8 +247,8 @@ function deviceOrientationListener(event) {
      if (count==400)
      {
 		window.removeEventListener("deviceorientation", deviceOrientationListener);
-        populateGraph("#graphB", "dataB", dataB, 180, true,  true);
-        populateGraph("#graphG", "dataG", dataG,  90, true,  true);
+        populateGraph("#graphB", "dataB", dataB, null, true,  true);
+        populateGraph("#graphG", "dataG", dataG, null, true,  true);
         populateGraph("#graphA", "dataA", dataA, 180, false, true);
      }
      //$("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw+"</p>");
