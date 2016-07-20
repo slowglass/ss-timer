@@ -116,7 +116,7 @@
 		<script src="js/nativedroid2.js"></script>
 		<script src="nd2settings.js"></script>
 		<script src="https://d3js.org/d3.v3.min.js"></script>
-		
+
 		<script src="howler.js"></script>
 		<script src="NoSleep.js"></script>
 
@@ -213,17 +213,22 @@ function deviceOrientationListener(event) {
 }
 
 function startListener() {
+	console.log("START");
 	sound.play();
 	dataA = [];
 	dataB = [];
 	dataG = [];
-	maxB = { v: 0, d: null };
-	maxG = { v: 0, d: null };
+	maxB = { v: -1, d: null };
+	maxG = { v: -1, d: null };
 	maxA = { v: 0, d: null };
+
+    setMax("#gB", maxB, 0, 0);
+    setMax("#gG", maxG, 0, 0);
 	window.addEventListener("deviceorientation", deviceOrientationListener);
 }
 
 function stopListener() {
+	console.log("STOP");
 	sound.play();
 	window.removeEventListener("deviceorientation", deviceOrientationListener);
     populateGraph("#graphB", "dataB", dataB, null, true,  true);
@@ -232,6 +237,7 @@ function stopListener() {
 }
 
 $(document).ready(function() {
+	console.log("INIT");
 	var href = ""+$(location).attr('href');		
 	if (href.substring( 0, "file:".length ) === "file:")
 		sound =  new Audio("music/templeBell.wav");
@@ -240,9 +246,10 @@ $(document).ready(function() {
 
 	window.setTimeout(
 		function() { 
+			$('.ui-content').css('background-color', 'white');
 			startListener();
 			window.setTimeout(function() { stopListener(); }, 30000);
-		}, 2000);
+		}, 4000);
 });
 </script> 
 
