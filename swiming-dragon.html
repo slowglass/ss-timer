@@ -18,13 +18,6 @@
 	<body>
 
 		<div data-role="page">
-
-			<div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
-				<a href="#bottomsheet" class="ui-btn ui-btn-right wow fadeIn" data-wow-delay='1.2s'><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
-				<h1 class="wow fadeIn" data-wow-delay='0.4s'>Page Title</h1>
-			</div>
-			<a id="start" href="#" class="ui-btn ui-btn-icon-left"><i class='zmdi zmdi-plus'></i> Start</a>
 			<div role="main" class="ui-content" data-inset="false">
 				<div id="gB" class="graph-holder"><div></div><svg id="graphB" width="340" height="90"></svg></div>
 				<div id="gG" class="graph-holder"><div></div><svg id="graphG" width="340" height="90"></svg></div>
@@ -184,12 +177,14 @@ function populateGraph(graph, label, data, range, showLine, showAxis)
 		
 }
 
-
+var date = new Date();
+var start = 0;
 var dataA = [];
 var dataB = [];
 var dataG = [];
 var maxB = { v: 0, d: null };
 var maxG = { v: 0, d: null };
+var sound = new Audio("music/ting.wav");
 
 function setMax(key, maxV, v, d) {
 	if (Math.abs(v) > maxV.v) { 
@@ -211,17 +206,10 @@ function deviceOrientationListener(event) {
      setMax("#gG", maxG, event.gamma, alpha);
      //setMax("#maxA", maxA, event.alpha, alpha);
 
-     if (count==400)
-     {
-		window.removeEventListener("deviceorientation", deviceOrientationListener);
-        populateGraph("#graphB", "dataB", dataB, null, true,  true);
-        populateGraph("#graphG", "dataG", dataG, null, true,  true);
-        populateGraph("#graphA", "dataA", dataA, 180, false, true);
-     }
-     //$("#log").append("<p>Event: D="+dir+", T="+tilt+", Y="+yaw+"</p>");
 }
 
-$('#start').click(function() {
+function startListener() {
+	sound.play();
 	dataA = [];
 	dataB = [];
 	dataG = [];
@@ -229,8 +217,23 @@ $('#start').click(function() {
 	maxG = { v: 0, d: null };
 	maxA = { v: 0, d: null };
 	window.addEventListener("deviceorientation", deviceOrientationListener);
-});
+}
 
+function stopListener() {
+	sound.play();
+	window.removeEventListener("deviceorientation", deviceOrientationListener);
+    populateGraph("#graphB", "dataB", dataB, null, true,  true);
+    populateGraph("#graphG", "dataG", dataG, null, true,  true);
+    populateGraph("#graphA", "dataA", dataA, 180, false, true);
+}
+
+$(document).ready(function() {
+	window.setTimeout(
+		function() { 
+			startListener();
+			window.setTimeout(function() { stopListener(); }, 10000);
+		}, 10000);
+});
 </script> 
 
 	</body>
