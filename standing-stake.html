@@ -171,15 +171,15 @@
 			//if (overrideMinDur != "") minDur=0+overrideMinDur;
 
 
-			if (href.substring( 0, "file:".length ) === "file:")
+			//if (href.substring( 0, "file:".length ) === "file:")
 			{
 				sounds.end =  new Audio("music/templeBell.wav");
 				sounds.minute =  new Audio("music/ting.wav");
 			}
-			else
+			//else
 			{
-				sounds.end = new Howl({ urls: ["music/templeBell.wav"]});
-				sounds.minute = new Howl({ urls: ["music/ting.wav"]});
+				sounds.end = new Howl({  src: ["music/templeBell.wav"]});
+				sounds.minute = new Howl({  src: ["music/ting.wav"]});
 			}
 			$(".repeat .btn").click(setRepeatCount);
 			$(".time .btn").click(startSS);
