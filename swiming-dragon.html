@@ -20,9 +20,10 @@
 
 		<div data-role="page">
 			<div role="main" class="ui-content" data-inset="false">
-				<div id="gB" class="graph-holder"><div></div><svg id="graphB" width="340" height="90"></svg></div>
-				<div id="gG" class="graph-holder"><div></div><svg id="graphG" width="340" height="90"></svg></div>
-				<div id="gA" class="graph-holder"><div></div><svg id="graphA" width="340" height="90"></svg></div>
+				<div id="gB" class="graph-holder"><div></div></svg></div>
+				<div id="gG" class="graph-holder"><div></div></svg></div>
+				<div id="gA" class="graph-holder"><div></div></svg></div>
+				<div id="xx" class="graph-holder"><div></div></div>
 			</div>
 		</div>
 		<style>
@@ -128,6 +129,48 @@
     });
 
 
+function popCircle(graph, label, data, range, showLine, showAxis)
+{
+	var m = [0, 5, 15, 5]; // margins
+	if (range == null)
+	{
+		var mx = Math.max.apply(null, data);
+		var mn = Math.min.apply(null, data);
+		range = Math.max(mx, -1*mn)*1.1;
+		m = [0, 5, 0, 5];
+	}
+
+	// define dimensions of graph
+	
+	var w = 340 - m[1] - m[3];	// width
+	var h = 340 - m[0] - m[2]; // height
+
+	var x   = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
+	var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
+	
+
+	var cX=function(d) { 
+		r=((d.b+20)/40) * 20 + 20;
+		t=d.a/360*Math.PI;
+		return Math.cos(t) * r + 60;}
+
+	var cY=function(d) { 
+		r=((d.b+20)/40) * 20 + 20;
+		t=d.a/360*Math.PI;
+		return Math.sin(t) * r + 60;}
+	var d3l = d3.svg.line()
+		.x(cX)
+		.y(cY);
+
+	var graph = d3.select(graph).append("svg:svg")
+		      .attr("width", w + m[1] + m[3])
+		      .attr("height", h + m[0] + m[2])
+		      .append("svg:g")
+		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+	graph.append("svg:path").attr("d", d3l(data)).attr("class", label);
+
+}
 
 function populateGraph(graph, label, data, range, showLine, showAxis)
 {	
@@ -145,12 +188,12 @@ function populateGraph(graph, label, data, range, showLine, showAxis)
 		var w = 340 - m[1] - m[3];	// width
 		var h = 90 - m[0] - m[2]; // height
 
-		var x     = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
+		var x   = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
 		var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
-			
 		var d3l = d3.svg.line()
 			.x(function(d,i) { return x(i); })
 			.y(function(d)   { return y(d); });
+		
 		
 		// Add an SVG element with the desired dimensions and margin.
 		var graph = d3.select(graph).append("svg:svg")
@@ -178,11 +221,14 @@ function populateGraph(graph, label, data, range, showLine, showAxis)
 	      	        .attr("r", 0.7)
 	        		.attr("cx", function(d, i) { return x(i); })
 	       			.attr("cy", function(d) { return y(d); });
+
+
 		
 }
 
 var date = new Date();
 var start = 0;
+var data = [];
 var dataA = [];
 var dataB = [];
 var dataG = [];
@@ -201,10 +247,13 @@ function setMax(key, maxV, v, d) {
 
 function deviceOrientationListener(event) {
 	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
-     var count = dataA.length;
      dataA.push(alpha);
      dataB.push(event.beta);
      dataG.push(event.gamma);
+
+     var count=data.length;
+     var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
+     data.push(d);
 
      setMax("#gB", maxB, event.beta, alpha);
      setMax("#gG", maxG, event.gamma, alpha);
@@ -231,21 +280,24 @@ function stopListener() {
 	console.log("STOP");
 	sound.play();
 	window.removeEventListener("deviceorientation", deviceOrientationListener);
-    populateGraph("#graphB", "dataB", dataB, null, true,  true);
-    populateGraph("#graphG", "dataG", dataG, null, true,  true);
-    populateGraph("#graphA", "dataA", dataA, 180, false, true);
+    populateGraph("#gB", "dataB", dataB, null, true,  true);
+    populateGraph("#gG", "dataG", dataG, null, true,  true);
+    populateGraph("#gA", "dataA", dataA, 180, false, true);
+    popCircle("#xx", "dataA", data, 180, true, true);
 }
 
 $(document).ready(function() {
 	console.log("INIT");	
 	sound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
 	
+	var s=1000;
+	s=100;
 	window.setTimeout(
 		function() { 
 			$('.ui-content').css('background-color', 'white');
 			startListener();
-			window.setTimeout(function() { stopListener(); }, 30000);
-		}, 4000);
+			window.setTimeout(function() { stopListener(); }, 30*s);
+		}, 4*s);
 });
 </script> 
 
