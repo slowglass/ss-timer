@@ -237,10 +237,9 @@ function stopListener() {
 }
 
 $(document).ready(function() {
-	console.log("INIT");
-	var href = ""+$(location).attr('href');		
+	console.log("INIT");	
 	sound = new Howl({ src: ["music/templeBell.wav"]});
-	}
+	
 	window.setTimeout(
 		function() { 
 			$('.ui-content').css('background-color', 'white');
