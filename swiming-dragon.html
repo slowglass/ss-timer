@@ -117,7 +117,7 @@
 		<script src="nd2settings.js"></script>
 		<script src="https://d3js.org/d3.v3.min.js"></script>
 
-		<script src="howler.js"></script>
+		<script src="howler2.js"></script>
 		<script src="NoSleep.js"></script>
 
 		<script>
@@ -240,9 +240,14 @@ $(document).ready(function() {
 	console.log("INIT");
 	var href = ""+$(location).attr('href');		
 	if (href.substring( 0, "file:".length ) === "file:")
+	{
 		sound =  new Audio("music/templeBell.wav");
+	}
 	else
+	{
+		alert("Hower");
 		sound = new Howl({ urls: ["music/templeBell.wav"]});
+	}
 
 	window.setTimeout(
 		function() { 
