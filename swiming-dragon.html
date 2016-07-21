@@ -239,16 +239,8 @@ function stopListener() {
 $(document).ready(function() {
 	console.log("INIT");
 	var href = ""+$(location).attr('href');		
-	if (href.substring( 0, "file:".length ) === "file:")
-	{
-		sound =  new Audio("music/templeBell.wav");
+	sound = new Howl({ src: ["music/templeBell.wav"]});
 	}
-	else
-	{
-		alert("Hower");
-		sound = new Howl({ urls: ["music/templeBell.wav"]});
-	}
-
 	window.setTimeout(
 		function() { 
 			$('.ui-content').css('background-color', 'white');
