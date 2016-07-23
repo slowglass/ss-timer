@@ -22,20 +22,25 @@
 	<body>
 		<div>
 			<div role="main">
-				<div id="gB" class="graph-holder"><div></div></svg></div>
-				<div id="gG" class="graph-holder"><div></div></svg></div>
-				<div id="gA" class="graph-holder"><div></div></svg></div>
-				<div id="xx" class="graph-holder"><div></div></div>
-				<div>
-					<table class="stats" id="hor-minimalist-b">
+				<div id="buttons">
+					<a href="#" id="switch-polar" class="scb"><img src="img/P.png"/></a>
+					<a href="#" id="switch-linear"class="scb"><img src="img/L.png"/></a>
+					<a href="#" id="switch-tilt" class="scb"><img src="img/T.png"/></a>
+					<a href="#" id="switch-roll" class="scb"><img src="img/R.png"/></a>
+					<a href="#" id="switch-stats" class="scb"><img src="img/S.png"/></a>
+				</div>
+				<div id="graphs"></div>
+				<div id="stats">
+					<table class="stats" id="gradient-style">
 						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
-						<tr class="min"><th>Min</th><td class="b"></td><td class="g"></tr>
-						<tr class="max"><th>Max</th><td class="b"></td><td class="g"></tr>
-						<tr class="avg"><th>Avg</th><td class="b"></td><td class="g"></tr>
-						<tr class="aavg"><th>Abs Avg</th><td class="b"></td><td class="g"></tr>
-						<tr class="sd"><th>Std. Dev</th><td class="b"></td><td class="g"></tr>
+						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="max"><td><strong>Max</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="avg"><td><strong>Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="aavg"><td><strong>Abs Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="sd"><td><strong>Std. Dev</strong></td><td class="b"></td><td class="g"></tr>
 					</table>
 					<p>For a summary of beta and gamma, please look <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained">here</a></p>
+				</div>
 			</div>
 		</div>
 		<style>
@@ -54,121 +59,212 @@
 		<script src="NoSleep.js"></script>
 
 		<script>
-    $(document).bind('mobileinit',function(){
-        $.mobile.changePage.defaults.changeHash = false;
-        $.mobile.hashListeningEnabled = false;
-        $.mobile.pushStateEnabled = false;
-    });
-
-function popCircle(graph, label, data, range, showLine, showAxis)
-{
-	var m = [0, 5, 15, 5]; // margins
-	if (range == null)
-	{
-		var mx = Math.max.apply(null, data);
-		var mn = Math.min.apply(null, data);
-		range = Math.max(mx, -1*mn)*1.1;
-		m = [0, 5, 0, 5];
-	}
-
-	// define dimensions of graph
-	
-	var w = 340 - m[1] - m[3];	// width
-	var h = 340 - m[0] - m[2]; // height
-
-	var x   = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
-	var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
-	
-
-	var cX=function(d) { 
-		r=((d.b+range)/(2*range)) * 20 + 20;
-		t=d.a/360*Math.PI;
-		return Math.cos(t) * r + 60;}
-
-	var cY=function(d) { 
-		r=((d.b+range)/(2*range)) * 20 + 20;
-		t=d.a/360*Math.PI;
-		return Math.sin(t) * r + 60;}
-	var d3l = d3.svg.line()
-		.x(cX)
-		.y(cY);
-
-	var graph = d3.select(graph).append("svg:svg")
-		      .attr("width", w + m[1] + m[3])
-		      .attr("height", h + m[0] + m[2])
-		      .append("svg:g")
-		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-	graph.append("svg:path").attr("d", d3l(data)).attr("class", label);
-
-}
-
-function populateGraph(graph, label, data, range, showLine, showAxis)
-{	
-		var m = [0, 5, 15, 5]; // margins
-		if (range == null)
-		{
-			var mx = Math.max.apply(null, data);
-			var mn = Math.min.apply(null, data);
-			range = Math.max(mx, -1*mn)*1.1;
-			m = [0, 5, 0, 5];
-		}
-
-		// define dimensions of graph
-		
-		var w = 340 - m[1] - m[3];	// width
-		var h = 90 - m[0] - m[2]; // height
-
-		var x   = d3.scale.linear().domain([0, dataA.length]).range([0, w]);
-		var y   = d3.scale.linear().domain([ -1*range,  range]).range([h, 0]); 
-		var d3l = d3.svg.line()
-			.x(function(d,i) { return x(i); })
-			.y(function(d)   { return y(d); });
-		
-		
-		// Add an SVG element with the desired dimensions and margin.
-		var graph = d3.select(graph).append("svg:svg")
-		      .attr("width", w + m[1] + m[3])
-		      .attr("height", h + m[0] + m[2])
-		      .append("svg:g")
-		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-		if (showAxis)
-		{
-			var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
-			graph.append("svg:g")
-			      .attr("class", "x axis")
-			      .attr("transform", "translate(0," + h + ")")
-			      .call(xAxis);
-		}
-
-
-		if (showLine)
-			graph.append("svg:path").attr("d", d3l(data)).attr("class", label);
-		else
-			graph.selectAll("dot")
-	        	.data(data)
-	      		.enter().append("circle")
-	      	        .attr("r", 0.7)
-	        		.attr("cx", function(d, i) { return x(i); })
-	       			.attr("cy", function(d) { return y(d); });
-
-
-		
-}
-
+var speed= 1000;
+var graph = null;
 var date = new Date();
 var start = 0;
 var data = [];
-var dataA = [];
-var dataB = [];
-var dataG = [];
-var maxB = { v: 0, d: null };
-var maxG = { v: 0, d: null };
-
 var statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 var statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 var sound = new Audio("music/ting.wav");
+var chartType="linear";
+var chartData="stats";
+var pointMappers = {}
+var linetype="linear";
+
+function drawLine(graph, cls, data, fX, aX, fY, aY, colour, opacity)
+{
+	var line = d3.svg.line()
+			.interpolate(linetype)
+			.x(function(d) { return fX(d[aX]); })
+			.y(function(d) { return fY(d[aY]); });
+
+	graph.append("svg:path")
+		.attr("d", line(data))
+		.attr("class", cls)
+		.attr('stroke', colour)
+		.attr('stroke-width', 1)
+		.attr('fill', 'none')
+	    .attr('stroke-opacity', opacity);
+}
+
+function transitionLine(cls, data, fX, aX, fY, aY)
+{
+	var line = d3.svg.line()
+			.interpolate(linetype)
+			.x(function(d) { return fX(d[aX]); })
+			.y(function(d) { return fY(d[aY]); });
+
+	graph.selectAll("path."+cls).transition().duration(speed).attr("d", line(data));
+}
+
+function transitionPolar(cls, data, fX, aX, fR, aR)
+{
+	var polar = function(d) {
+    	var r=fR(d[aR]);
+    	var t=(d[aX]%360)/360*(Math.PI*2);
+   		var p = { x: r*Math.cos(t)+170, y: r*Math.sin(t)+170 };
+    	return p;
+  	}
+
+  	var line = d3.svg.line()
+  		.interpolate(linetype)
+  		.x(function(d) { return polar(d).x; })
+  		.y(function(d) { return polar(d).y; });
+
+
+	graph.selectAll('path.'+cls).transition().duration(speed).attr("d", line(data));
+}
+
+function drawDots(graph, cls, data, fX, aX, fY, aY, colour, opacity)
+{
+	graph.selectAll("dot")
+	   	.data(data)
+	    .enter().append("circle")
+		.attr("class", cls)
+		.attr('stroke', colour)
+	    .attr("r", 0.7)
+	    .attr("cx", function(d) { return fX(d[aX]); })
+	    .attr("cy", function(d) { return fY(d[aY]); })
+	    .attr('opacity', opacity);
+}
+
+
+function populateGraph(graph)
+{	
+	var h=170; //graph.attr('height')/2;
+	var w=340; //graph.attr('width');
+	var mxB = d3.max(data, function (d) { return d.b; });
+	var mnB = d3.min(data, function (d) { return d.b; }); 
+	var rangeB = Math.max(mxB, -1*mnB)*1.1;
+	var mxG = d3.max(data, function (d) { return d.b; });
+	var mnG = d3.min(data, function (d) { return d.b; }); 
+	var rangeG = Math.max(mxG, -1*mnG)*1.1;
+
+	for (var i=0; i<data.length; i++)
+	{
+		data[i].z=0;
+		data[i].mxB=mxB;
+		data[i].mnB=mnB;;
+		data[i].mxA=-180;
+		data[i].mnA=180;
+		data[i].mxG=mxG;
+		data[i].mnG=mnG;
+	}
+
+	pointMappers.x   = d3.scale.linear().domain([0, data.length]).range([0, w]);
+	pointMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
+	pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 30]);
+	pointMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
+	pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 30]); 
+	pointMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
+
+	var x=pointMappers.x;
+	var y=pointMappers.yB;
+	drawLine(graph, "beta beta-data", data, x, "n", y, "b",   "red", 1.0);
+	drawLine(graph, "beta beta-mx ",   data, x, "n", y, "mxB", "orange", 1.0);
+	drawLine(graph, "beta beta-z",    data, x, "n", y, "z",   "orange", 1.0);
+	drawLine(graph, "beta beta-mn",   data, x, "n", y, "mnB", "orange", 1.0);
+
+	x=pointMappers.x;
+	y=pointMappers.yG;
+	drawLine(graph, "gamma gamma-data",    data, x, "n", y, "g",   "green", 0.0);
+	drawLine(graph, "gamma gamma-mx", data, x, "n", y, "mxG", "cyan", 0.0);
+	drawLine(graph, "gamma gamma-z",  data, x, "n", y, "z",   "cyan", 0.0);
+	drawLine(graph, "gamma gamma-mn", data, x, "n", y, "mnG", "cyan", 0.0);
+
+	x=pointMappers.x;
+	y=pointMappers.yA;
+	drawDots(graph, "alpha alpha-data", data, x, "n", y, "a", "black", 1.0)
+	drawLine(graph, "alpha alpha-mx", data, x, "n", y, "mxA", "black", 1.0);
+	drawLine(graph, "alpha alpha-z",  data, x, "n", y, "z",   "black", 1.0);
+	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", "black", 1.0);
+}
+
+function switchToRoll()
+{
+	$('#stats').hide();
+	$('#graphs').show();
+	if (chartData=="gamma") return;
+	chartData="gamma";
+	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
+	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	var alphaOpacity = (chartType=="polar") ? 0.0 : 1.0;
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
+	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+}
+
+function switchToTilt()
+{
+	$('#stats').hide();
+	$('#graphs').show();
+	if (chartData=="beta") return;
+	chartData="beta";
+	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
+	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	var alphaOpacity = (chartType=="polar") ? 0.0 : 1.0;
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
+	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+}
+
+function switchToPolar()
+{
+	$('#stats').hide();
+	$('#graphs').show();
+	if (chartType=="polar") return;
+	chartType="polar";
+	var x=pointMappers.x;
+	var y=pointMappers.rB;
+	transitionPolar("beta-data", data, x, "a", y, "b");
+	transitionPolar("beta-mx",   data, x, "a", y, "mxB");
+	transitionPolar("beta-z",    data, x, "a", y, "z");
+	transitionPolar("beta-mn",   data, x, "a", y, "mnB");
+
+	x=pointMappers.x;
+	y=pointMappers.rG;
+	transitionPolar("gamma-data",    data, x, "a", y, "g");
+	transitionPolar("gamma-mx", data, x, "a", y, "mxG");
+	transitionPolar("gamma-z",  data, x, "a", y, "z");
+	transitionPolar("gamma-mn", data, x, "a", y, "mnG");
+
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 0.0);
+	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 0.0);
+}
+
+function switchToLinear()
+{
+	$('#stats').hide();
+	$('#graphs').show();
+	if (chartType=="linear") return;
+	chartType="linear";
+
+	var x=pointMappers.x;
+	var y=pointMappers.yB;
+	transitionLine("beta-data", data, x, "n", y, "b");
+	transitionLine("beta-mx",   data, x, "n", y, "mxB");
+	transitionLine("beta-z",    data, x, "n", y, "z");
+	transitionLine("beta-mn",   data, x, "n", y, "mnB");
+
+	x=pointMappers.x;
+	y=pointMappers.yG;
+	transitionLine("gamma-data",  data, x, "n", y, "g");
+	transitionLine("gamma-mx",    data, x, "n", y, "mxG");
+	transitionLine("gamma-z",     data, x, "n", y, "z");
+	transitionLine("gamma-mn",    data, x, "n", y, "mnG");
+
+	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 1.0);
+}
+function switchToStats()
+{
+	$('#stats').show();
+	$('#graphs').hide();
+	if (chartData=="stats") return;
+	chartData="stats";
+}
+
 
 function setStats(id1, id2, stats, v, alpha)
 {
@@ -184,19 +280,18 @@ function setStats(id1, id2, stats, v, alpha)
 	var av=(stats.sum/stats.num)
 	var sd=Math.sqrt((stats.ssum/stats.num)-av*av);
 
-	$(".stats .min " + id2).text(Math.round(stats.mn*ac)/ac);
-	$(".stats .max " + id2).text(Math.round(stats.mx*ac)/ac);
-	$(".stats .avg " + id2).text(Math.round(av*ac)/ac);
-	$(".stats .sd " + id2).text(Math.round(sd*ac)/ac);
-	$(".stats .aavg " + id2).text(Math.round(stats.asum/stats.num*ac)/ac);
+	console.log("STATS("+id2+"): "+JSON.stringify(stats));
+
+	$(".stats .min " + id2).text(stats.mn.toFixed(2));
+	$(".stats .max " + id2).text(stats.mx.toFixed(2));
+	$(".stats .avg " + id2).text(av.toFixed(2));
+	$(".stats .sd " + id2).text(sd.toFixed(2));
+	$(".stats .aavg " + id2).text((stats.asum/stats.num).toFixed(2));
 }
 
 
 function deviceOrientationListener(event) {
 	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
-     dataA.push(alpha);
-     dataB.push(event.beta);
-     dataG.push(event.gamma);
 
      var count=data.length;
      var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
@@ -209,27 +304,37 @@ function deviceOrientationListener(event) {
 
 function startListener() {
 	sound.play();
-	dataA = [];
-	dataB = [];
-	dataG = [];
-	maxB = { v: -1, d: null };
-	maxG = { v: -1, d: null };
-	maxA = { v: 0, d: null };
+	$("#graphs").css("height", "690px")
+	$("#graphs").css("width", "340px");
+	graph = d3.select("#graphs").append("svg:svg")
+		.attr("width", 340)
+		.attr("height", 340)
+		.append("svg:g");
+
+	$('#stats').hide();
+	$('#graphs').show();
+	$('#buttons').hide();
+	statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
+	statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 	window.addEventListener("deviceorientation", deviceOrientationListener);
 }
 
 function stopListener() {
+
+	$('#stats').show();
+	$('#graphs').hide();
+	$('#buttons').show();
+	populateGraph(graph);
+
 	sound.play();
 	window.removeEventListener("deviceorientation", deviceOrientationListener);
-    populateGraph("#gB", "dataB", dataB, null, true,  true);
-    populateGraph("#gG", "dataG", dataG, null, true,  true);
-    populateGraph("#gA", "dataA", dataA, 180, false, true);
-    popCircle("#xx", "dataA", data, null, true, true);
 }
 
+$('#stats').hide();
+$('#graph').show();
+$('#buttons').hide();
 $(document).ready(function() {
 	sound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
-	
 	var s=1000;
 	//s=100;
 	window.setTimeout(
@@ -239,6 +344,12 @@ $(document).ready(function() {
 			window.setTimeout(function() { stopListener(); }, 20*s);
 		}, 4*s);
 });
+
+$('#switch-linear').click(switchToLinear);
+$('#switch-polar').click(switchToPolar);
+$('#switch-tilt').click(switchToTilt);
+$('#switch-roll').click(switchToRoll);
+$('#switch-stats').click(switchToStats);
 </script> 
 
 	</body>

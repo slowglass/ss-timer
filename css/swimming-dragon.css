@@ -27,6 +27,10 @@ svg text {
 	color: #cccccc;
 }
 
+.scb img {
+	width: 60px;
+	height: 60px;
+}
 .graph-holder {
   position: relative;
   width: 340px;

@@ -461,9 +461,9 @@ body
 {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size: 12px;
-	margin: 45px;
-	width: 480px;
-	text-align: left;
+	margin: 0px;
+	width: 340px;
+	text-align: right;
 	border-collapse: collapse;
 }
 #gradient-style th
