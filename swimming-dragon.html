@@ -2,120 +2,52 @@
 <html>
 	<head>
 		<title>nativeDroid II - jQueryMobile Template</title>
+
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
-		<link rel="stylesheet" href="vendor/waves/waves.min.css" />
-		<link rel="stylesheet" href="vendor/wow/animate.css" />
-		<link rel="stylesheet" href="css/nativedroid2.css" />
 
+		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />-->
+		<!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />-->
+		<!--<link rel="stylesheet" href="css/nativedroid2.css" />-->
+		<!--<link rel="stylesheet" href="vendor/waves/waves.min.css" />-->
+		<!--<link rel="stylesheet" href="vendor/wow/animate.css" />-->
+    	<link rel="stylesheet" type="text/css" href="css/swimming-dragon.css">
 
 		<meta name="mobile-web-app-capable" content="yes">
 	 	<meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 	</head>
 	<body>
-
-		<div data-role="page">
-			<div role="main" class="ui-content" data-inset="false">
+		<div>
+			<div role="main">
 				<div id="gB" class="graph-holder"><div></div></svg></div>
 				<div id="gG" class="graph-holder"><div></div></svg></div>
 				<div id="gA" class="graph-holder"><div></div></svg></div>
 				<div id="xx" class="graph-holder"><div></div></div>
+				<div>
+					<h3>Summary</h3>
+					<table class="stats">
+						<tr><th>&nbsp;</th><th>Beta</th><th>Gamma</th></tr>
+						<tr class="min"><th>Min</th><td class="b"></td><td class="g"></tr>
+						<tr class="max"><th>Max</th><td class="b"></td><td class="g"></tr>
+						<tr class="avg"><th>Avg</th><td class="b"></td><td class="g"></tr>
+						<tr class="aavg"><th>Abs Avg</th><td class="b"></td><td class="g"></tr>
+						<tr class="sd"><th>Std. Dev</th><td class="b"></td><td class="g"></tr>
+					</table>
+					<p>For a summary of beta and gamma, please look <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained">here</a></p>
 			</div>
 		</div>
 		<style>
-		.graph-holder {
-		  position: relative;
-		  width: 340px;
-		  height: 90px;
-  		  border: 0px solid #c00;
-		}
-		.graph-holder svg {	
-  			position: absolute;
-			top: 0px;
-  			left: 0px;
-		}
-		.graph-holder div {	
-  			position: absolute;
-			top: 0;
-    		bottom: 0;
-			left: 0;
-    		right: 0;
-    		margin: auto;
-    		text-align: center;
-    		font-size: 4em;
-    		color: #cccccc;
-		}
-			/* tell the SVG path to be a thin blue line without any area fill */
-			path {
-				stroke-width: 1;
-				fill: none;
-			}
-			
-			.dataA {
-				stroke: steelblue;
-			}
-
-			.dataB {
-				stroke: orange;
-			}
-
-			.dataG {
-				stroke: green;
-			}
-
-			.axis {
-			  shape-rendering: crispEdges;
-			}
-
-			.x.axis line {
-			  stroke: lightgrey;
-			}
-
-			.x.axis .minor {
-			  stroke-opacity: .5;
-			}
-
-			.x.axis path {
-			  display: none;
-			}
-			
-			.x.axis text {
-				font-size: 14;
-			}
-
-			.y.axis line, .y.axis path {
-			  fill: none;
-			  stroke: #000;
-			}
-
-			.y.axis text {
-				font-size: 14;
-			}
-
-			.y.axisRight text {
-				fill: orange;
-			}
-			
-			.y.axisLeft text {
-				fill: steelblue;
-			}
-
-			#graphB .axis text { display: none; }
-			#graphG .axis text { display: none; }
-			div.ui-content { padding: 0;}
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-		<script src="vendor/chartist/chartist.min.js"></script>
+		<!--<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>-->
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>-->
+		<!--<script src="vendor/chartist/chartist.min.js"></script>
 		<script src="vendor/waves/waves.min.js"></script>
 		<script src="vendor/wow/wow.min.js"></script>
 		<script src="js/nativedroid2.js"></script>
-		<script src="nd2settings.js"></script>
+		<script src="nd2settings.js"></script>-->
 		<script src="https://d3js.org/d3.v3.min.js"></script>
 
 		<script src="howler2.js"></script>
@@ -127,7 +59,6 @@
         $.mobile.hashListeningEnabled = false;
         $.mobile.pushStateEnabled = false;
     });
-
 
 function popCircle(graph, label, data, range, showLine, showAxis)
 {
@@ -234,16 +165,32 @@ var dataB = [];
 var dataG = [];
 var maxB = { v: 0, d: null };
 var maxG = { v: 0, d: null };
+
+var statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
+var statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 var sound = new Audio("music/ting.wav");
 
-function setMax(key, maxV, v, d) {
-	if (Math.abs(v) > maxV.v) { 
-		maxV.v = Math.abs(v); 
-		maxV.d=d;
-		$(key + ' div').text(Math.round(maxV.v));
-    	//$(key + ' span.d').text(Math.round(maxV.d));
-    }
+function setStats(id1, id2, stats, v, alpha)
+{
+	if (v > stats.mx) { stats.mx=v; }
+	if (v < stats.mn) { stats.mn=v; }
+	stats.num++;
+	stats.sum+=v;
+	stats.ssum+=v*v;
+	stats.asum+=Math.abs(v);
+	stats.amx=Math.max(stats.mx, -1*stats.mn);
+	$(id1 + ' div').text(Math.round(stats.amx));
+	var ac=100;
+	var av=(stats.sum/stats.num)
+	var sd=Math.sqrt((stats.ssum/stats.num)-av*av);
+
+	$(".stats .min " + id2).text(Math.round(stats.mn*ac)/ac);
+	$(".stats .max " + id2).text(Math.round(stats.mx*ac)/ac);
+	$(".stats .avg " + id2).text(Math.round(av*ac)/ac);
+	$(".stats .sd " + id2).text(Math.round(sd*ac)/ac);
+	$(".stats .aavg " + id2).text(Math.round(stats.asum/stats.num*ac)/ac);
 }
+
 
 function deviceOrientationListener(event) {
 	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
@@ -255,14 +202,13 @@ function deviceOrientationListener(event) {
      var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
      data.push(d);
 
-     setMax("#gB", maxB, event.beta, alpha);
-     setMax("#gG", maxG, event.gamma, alpha);
-     //setMax("#maxA", maxA, event.alpha, alpha);
+     setStats("#gB", ".b", statsB, event.beta,  alpha);
+     setStats("#gB", ".g", statsG, event.gamma, alpha);
 
 }
 
 function startListener() {
-	console.log("START");
+	//console.log("START");
 	sound.play();
 	dataA = [];
 	dataB = [];
@@ -270,14 +216,11 @@ function startListener() {
 	maxB = { v: -1, d: null };
 	maxG = { v: -1, d: null };
 	maxA = { v: 0, d: null };
-
-    setMax("#gB", maxB, 0, 0);
-    setMax("#gG", maxG, 0, 0);
 	window.addEventListener("deviceorientation", deviceOrientationListener);
 }
 
 function stopListener() {
-	console.log("STOP");
+	//console.log("STOP");
 	sound.play();
 	window.removeEventListener("deviceorientation", deviceOrientationListener);
     populateGraph("#gB", "dataB", dataB, null, true,  true);
@@ -287,11 +230,11 @@ function stopListener() {
 }
 
 $(document).ready(function() {
-	console.log("INIT");	
+	//console.log("INIT");	
 	sound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
 	
 	var s=1000;
-	//s=100;
+	s=100;
 	window.setTimeout(
 		function() { 
 			$('.ui-content').css('background-color', 'white');
