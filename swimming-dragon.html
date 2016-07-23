@@ -208,7 +208,6 @@ function deviceOrientationListener(event) {
 }
 
 function startListener() {
-	//console.log("START");
 	sound.play();
 	dataA = [];
 	dataB = [];
@@ -220,7 +219,6 @@ function startListener() {
 }
 
 function stopListener() {
-	//console.log("STOP");
 	sound.play();
 	window.removeEventListener("deviceorientation", deviceOrientationListener);
     populateGraph("#gB", "dataB", dataB, null, true,  true);
@@ -230,16 +228,15 @@ function stopListener() {
 }
 
 $(document).ready(function() {
-	//console.log("INIT");	
 	sound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
 	
 	var s=1000;
-	s=100;
+	//s=100;
 	window.setTimeout(
 		function() { 
 			$('.ui-content').css('background-color', 'white');
 			startListener();
-			window.setTimeout(function() { stopListener(); }, 30*s);
+			window.setTimeout(function() { stopListener(); }, 20*s);
 		}, 4*s);
 });
 </script> 
