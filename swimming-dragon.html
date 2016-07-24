@@ -385,13 +385,7 @@ function stopListener() {
 	$('#stats').show();
 	$('#graphs').hide();
 	$('#buttons').show();
-
-
-	$('switch-alpha').hide();
-	$('switch-beta').hide();
-	$('switch-polar').show();
-	$('switch-linear').show();
-	$('switch-stats').hide();
+	switchToStats();
 
 	populateGraph(graph);
 
