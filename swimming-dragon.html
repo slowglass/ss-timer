@@ -28,6 +28,7 @@
 					<a href="#" id="switch-tilt" class="scb"><img src="img/T.png"/></a>
 					<a href="#" id="switch-roll" class="scb"><img src="img/R.png"/></a>
 					<a href="#" id="switch-stats" class="scb"><img src="img/S.png"/></a>
+					<a href="#" id="restart" class="scb"><img src="img/Blank.png"/></a>
 				</div>
 				<div id="graphs"></div>
 				<div id="stats">
@@ -61,8 +62,6 @@
 		<script>
 var speed= 5000;
 var graph = null;
-var date = new Date();
-var start = 0;
 var data = [];
 var statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 var statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
@@ -304,8 +303,17 @@ function deviceOrientationListener(event) {
 
 function startListener() {
 	sound.play();
+
+	data = [];
+	statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
+	statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
+	chartType="linear";
+	chartData="stats";
+
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
+	$("#graphs svg").remove();
+
 	graph = d3.select("#graphs").append("svg:svg")
 		.attr("width", 340)
 		.attr("height", 340)
@@ -350,6 +358,7 @@ $('#switch-polar').click(switchToPolar);
 $('#switch-tilt').click(switchToTilt);
 $('#switch-roll').click(switchToRoll);
 $('#switch-stats').click(switchToStats);
+$('#restart').click(startListener);
 </script> 
 
 	</body>
