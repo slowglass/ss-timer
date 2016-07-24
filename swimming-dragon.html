@@ -23,12 +23,12 @@
 		<div>
 			<div role="main">
 				<div id="buttons">
-					<a href="#" id="switch-polar" class="scb"><img src="img/P.png"/></a>
-					<a href="#" id="switch-linear"class="scb"><img src="img/L.png"/></a>
-					<a href="#" id="switch-tilt" class="scb"><img src="img/X.png"/></a>
-					<a href="#" id="switch-roll" class="scb"><img src="img/Y.png"/></a>
-					<a href="#" id="switch-stats" class="scb"><img src="img/S.png"/></a>
-					<a href="#" id="restart" class="scb"><img src="img/Blank.png"/></a>
+					<a href="#" id="switch-polar" class="scb"><img src="img/Polar1.png"/></a>
+					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
+					<a href="#" id="switch-beta" class="scb"><img src="img/UpDown.png"/></a>
+					<a href="#" id="switch-gamma" class="scb"><img src="img/LeftRight.png"/></a>
+					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
+					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
 				</div>
 				<div id="graphs"></div>
 				<div id="stats">
@@ -180,12 +180,23 @@ function populateGraph(graph)
 	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", "#666666", 1.0);
 }
 
-function switchToRoll()
+function switchToGamma()
 {
 	$('#stats').hide();
 	$('#graphs').show();
+	$('#switch-beta').show();
+	$('#switch-gamma').hide();
 	if (chartData=="gamma") return;
 	chartData="gamma";
+	if (chartData=="beta")
+	{
+		$('#switch-gamma').show();
+		$('#switch-beta').hide();
+	} else {
+
+		$('#switch-gamma').hide();
+		$('#switch-beta').show();
+	}
 	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
 	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
@@ -194,12 +205,23 @@ function switchToRoll()
 	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
 }
 
-function switchToTilt()
+function switchToBeta()
 {
 	$('#stats').hide();
 	$('#graphs').show();
+	$('#switch-beta').hide();
+	$('#switch-gamma').show();
 	if (chartData=="beta") return;
 	chartData="beta";
+	if (chartData=="beta")
+	{
+		$('#switch-gamma').show();
+		$('#switch-beta').hide();
+	} else {
+
+		$('#switch-gamma').hide();
+		$('#switch-beta').show();
+	}
 	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
@@ -212,6 +234,18 @@ function switchToPolar()
 {
 	$('#stats').hide();
 	$('#graphs').show();
+	$('#switch-polar').hide();
+	$('#switch-linear').show();
+	$('#switch-stats').show();
+	if (chartData=="beta")
+	{
+		$('#switch-gamma').show();
+		$('#switch-beta').hide();
+	} else {
+
+		$('#switch-gamma').hide();
+		$('#switch-beta').show();
+	}
 	if (chartType=="polar") return;
 	chartType="polar";
 	var x=pointMappers.x;
@@ -236,6 +270,18 @@ function switchToLinear()
 {
 	$('#stats').hide();
 	$('#graphs').show();
+	$('#switch-polar').show();
+	$('#switch-linear').hide();
+	$('#switch-stats').show();
+	if (chartData=="beta")
+	{
+		$('#switch-gamma').show();
+		$('#switch-beta').hide();
+	} else {
+
+		$('#switch-gamma').hide();
+		$('#switch-beta').show();
+	}
 	if (chartType=="linear") return;
 	chartType="linear";
 
@@ -256,10 +302,16 @@ function switchToLinear()
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 1.0);
 }
+
 function switchToStats()
 {
 	$('#stats').show();
 	$('#graphs').hide();
+	$('#switch-polar').show();
+	$('#switch-linear').show();
+	$('#switch-stats').hide();
+	$('#switch-alpha').hide();
+	$('#switch-beta').hide();
 	if (chartData=="stats") return;
 	chartData="stats";
 }
@@ -333,6 +385,14 @@ function stopListener() {
 	$('#stats').show();
 	$('#graphs').hide();
 	$('#buttons').show();
+
+
+	$('switch-alpha').hide();
+	$('switch-beta').hide();
+	$('switch-polar').show();
+	$('switch-linear').show();
+	$('switch-stats').hide();
+
 	populateGraph(graph);
 
 	sound.play();
@@ -343,7 +403,7 @@ function prepareListener()
 {
 	console.log("PREPARE");
 	$("#graphs svg").remove();
-	
+
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
@@ -367,8 +427,8 @@ $(document).ready(function() {
 
 $('#switch-linear').click(switchToLinear);
 $('#switch-polar').click(switchToPolar);
-$('#switch-tilt').click(switchToTilt);
-$('#switch-roll').click(switchToRoll);
+$('#switch-beta').click(switchToBeta);
+$('#switch-gamma').click(switchToGamma);
 $('#switch-stats').click(switchToStats);
 $('#restart').click(prepareListener);
 </script> 
