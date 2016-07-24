@@ -213,7 +213,7 @@ function switchToBeta()
 	$('#switch-gamma').show();
 	if (chartData=="beta") return;
 	chartData="beta";
-	if (chartData=="beta")
+	if (chartData!="gamma")
 	{
 		$('#switch-gamma').show();
 		$('#switch-beta').hide();
@@ -237,7 +237,7 @@ function switchToPolar()
 	$('#switch-polar').hide();
 	$('#switch-linear').show();
 	$('#switch-stats').show();
-	if (chartData=="beta")
+	if (chartData!="gamma")
 	{
 		$('#switch-gamma').show();
 		$('#switch-beta').hide();
