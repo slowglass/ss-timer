@@ -161,24 +161,24 @@ function populateGraph(graph)
 
 	var x=pointMappers.x;
 	var y=pointMappers.yB;
-	drawLine(graph, "beta beta-data", data, x, "n", y, "b",   "red", 1.0);
-	drawLine(graph, "beta beta-mx ",   data, x, "n", y, "mxB", "orange", 1.0);
-	drawLine(graph, "beta beta-z",    data, x, "n", y, "z",   "orange", 1.0);
-	drawLine(graph, "beta beta-mn",   data, x, "n", y, "mnB", "orange", 1.0);
+	drawLine(graph, "beta beta-data", data, x, "n", y, "b",   "orange", 1.0);
+	drawLine(graph, "beta beta-mx ",   data, x, "n", y, "mxB", #666666, 1.0);
+	drawLine(graph, "beta beta-z",    data, x, "n", y, "z",   #666666, 1.0);
+	drawLine(graph, "beta beta-mn",   data, x, "n", y, "mnB", #666666, 1.0);
 
 	x=pointMappers.x;
 	y=pointMappers.yG;
 	drawLine(graph, "gamma gamma-data",    data, x, "n", y, "g",   "green", 0.0);
-	drawLine(graph, "gamma gamma-mx", data, x, "n", y, "mxG", "cyan", 0.0);
-	drawLine(graph, "gamma gamma-z",  data, x, "n", y, "z",   "cyan", 0.0);
-	drawLine(graph, "gamma gamma-mn", data, x, "n", y, "mnG", "cyan", 0.0);
+	drawLine(graph, "gamma gamma-mx", data, x, "n", y, "mxG", #666666, 0.0);
+	drawLine(graph, "gamma gamma-z",  data, x, "n", y, "z",   #666666, 0.0);
+	drawLine(graph, "gamma gamma-mn", data, x, "n", y, "mnG", #666666, 0.0);
 
 	x=pointMappers.x;
 	y=pointMappers.yA;
-	drawDots(graph, "alpha alpha-data", data, x, "n", y, "a", "black", 1.0)
-	drawLine(graph, "alpha alpha-mx", data, x, "n", y, "mxA", "black", 1.0);
-	drawLine(graph, "alpha alpha-z",  data, x, "n", y, "z",   "black", 1.0);
-	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", "black", 1.0);
+	drawDots(graph, "alpha alpha-data", data, x, "n", y, "a", "purple", 1.0)
+	drawLine(graph, "alpha alpha-mx", data, x, "n", y, "mxA", #666666, 1.0);
+	drawLine(graph, "alpha alpha-z",  data, x, "n", y, "z",   #666666, 1.0);
+	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", #666666, 1.0);
 }
 
 function switchToRoll()
