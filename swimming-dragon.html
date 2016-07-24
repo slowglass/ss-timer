@@ -59,7 +59,7 @@
 		<script src="NoSleep.js"></script>
 
 		<script>
-var speed= 1000;
+var speed= 5000;
 var graph = null;
 var date = new Date();
 var start = 0;
@@ -341,7 +341,7 @@ $(document).ready(function() {
 		function() { 
 			$('.ui-content').css('background-color', 'white');
 			startListener();
-			window.setTimeout(function() { stopListener(); }, 20*s);
+			window.setTimeout(function() { stopListener(); }, 10*s);
 		}, 4*s);
 });
 
