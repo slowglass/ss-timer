@@ -313,7 +313,7 @@ function startListener() {
 
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
-	$("#graphs svg").remove();
+	
 
 	graph = d3.select("#graphs").append("svg:svg")
 		.attr("width", 340)
@@ -342,11 +342,12 @@ function stopListener() {
 function prepareListener()
 {
 	console.log("PREPARE");
-
+	$("#graphs svg").remove();
+	
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
-	
+
 	var s=1000;
 	//s=100;
 	window.setTimeout(
