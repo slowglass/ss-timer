@@ -30,7 +30,8 @@
 					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
 					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
 				</div>
-				<div id="graphs"></div>
+				<div id="graphs">
+					<img id="working" src="img/working2.gif" style="height:340px; width:340px" />
 				<div id="stats">
 					<table class="stats" id="gradient-style">
 						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
@@ -366,16 +367,8 @@ function startListener() {
 	statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 	chartType="linear";
 	chartData="stats";
-
-	$("#graphs").css("height", "690px")
-	$("#graphs").css("width", "340px");
 	
-
-	graph = d3.select("#graphs").append("svg:svg")
-		.attr("width", 340)
-		.attr("height", 340)
-		.append("svg:g");
-
+	$('#working').show();
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
@@ -386,6 +379,28 @@ function startListener() {
 
 function stopListener() {
 	console.log("STOP");
+	$("#graphs").css("height", "690px")
+	$("#graphs").css("width", "340px");
+	$('#working').hide();
+
+	graph = d3.select("#graphs").append("svg:svg")
+		.attr("width", 340)
+		.attr("height", 340)
+		.append("svg:g");
+
+	 graph.append("text")
+	 	.attr("class", "gamma")
+	 	.attr("x", 170)
+    	.attr("y", 170)
+    	.attr("dy", ".35em")
+    	.attr('font-size', '4em')
+    	.attr('fill', '#cccccc')
+    	.attr('stroke', '#cccccc')
+    	.style("text-anchor", "middle")
+    	.text("");
+
+
+
 	$('#stats').show();
 	$('#graphs').hide();
 	$('#buttons').show();
@@ -415,6 +430,7 @@ function prepareListener()
 		}, 4*s);
 }
 
+$('#working').hide();
 $('#stats').hide();
 $('#graph').show();
 $('#buttons').hide();
