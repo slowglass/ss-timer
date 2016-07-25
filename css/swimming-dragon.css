@@ -57,57 +57,6 @@ div {
 }
 	/* tell the SVG path to be a thin blue line without any area fill */
 
-	.dataA {
-		stroke: steelblue;
-	}
-
-	.dataB {
-		stroke: orange;
-	}
-
-	.dataG {
-		stroke: green;
-	}
-
-	.axis {
-	  shape-rendering: crispEdges;
-	}
-
-	.x.axis line {
-	  stroke: lightgrey;
-	}
-
-	.x.axis .minor {
-	  stroke-opacity: .5;
-	}
-
-	.x.axis path {
-	  display: none;
-	}
-	
-	.x.axis text {
-		font-size: 14;
-	}
-
-	.y.axis line, .y.axis path {
-	  fill: none;
-	  stroke: #000;
-	}
-
-	.y.axis text {
-		font-size: 14;
-	}
-
-	.y.axisRight text {
-		fill: orange;
-	}
-	
-	.y.axisLeft text {
-		fill: steelblue;
-	}
-
-	#graphB .axis text { display: none; }
-	#graphG .axis text { display: none; }
 	div.ui-content { padding: 0;}
 
 @media (min-width: 768px) and (max-width: 991px) {

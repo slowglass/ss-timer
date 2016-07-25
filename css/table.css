@@ -14,6 +14,7 @@ body
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size: 12px;
 	margin: 0px;
+	margin-top: 20px;
 	width: 340px;
 	text-align: right;
 	border-collapse: collapse;
@@ -21,30 +22,16 @@ body
 #gradient-style th
 {
 	font-size: 13px;
-	font-weight: normal;
+	font-weight: bold;
 	padding: 8px;
 	background: #ffffff;
-	border-top: 2px solid #d3ddff;
+	border-top: 1px solid #000;
 	border-bottom: 1px solid #000;
 	color: #000;
 }
 #gradient-style td
 {
 	padding: 8px; 
-	border-bottom: 1px solid #000;
 	color: #000;
-	border-top: 1px solid #fff;
 	background: #ffffff;
 }
-#gradient-style tfoot tr td
-{
-	background: #e8edff;
-	font-size: 12px;
-	color: #99c;
-}
-#gradient-style tbody tr:hover td
-{
-	background: #d0dafd url('table-images/gradhover.png') repeat-x;
-	color: #339;
-}
-
