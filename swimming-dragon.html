@@ -192,6 +192,27 @@ function populateGraph(graph)
 	drawLine(graph, "alpha alpha-mx", data, x, "n", y, "mxA", "#666666", 1.0);
 	drawLine(graph, "alpha alpha-z",  data, x, "n", y, "z",   "#666666", 1.0);
 	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", "#666666", 1.0);
+
+	graph.selectAll('#text-beta').text(Math.max(Math.abs(statsB.mn),statsB.mx).toFixed(1));
+	graph.selectAll('#text-gamma').text(Math.max(Math.abs(statsG.mn),statsG.mx).toFixed(1));
+}
+
+function hideElements()
+{
+	var numOpacity = (chartType=="polar") ? 1.0 : 0.0;
+	if (chartData!="gamma")
+	{
+		$('#switch-gamma').show();
+		$('#switch-beta').hide();
+		graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", numOpacity);
+		graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
+	} else {
+
+		$('#switch-gamma').hide();
+		$('#switch-beta').show();
+		graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
+		graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", numOpacity);
+	}
 }
 
 function switchToGamma()
@@ -202,15 +223,7 @@ function switchToGamma()
 	$('#switch-gamma').hide();
 	if (chartData=="gamma") return;
 	chartData="gamma";
-	if (chartData=="beta")
-	{
-		$('#switch-gamma').show();
-		$('#switch-beta').hide();
-	} else {
-
-		$('#switch-gamma').hide();
-		$('#switch-beta').show();
-	}
+	hideElements();
 	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
 	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
@@ -227,15 +240,7 @@ function switchToBeta()
 	$('#switch-gamma').show();
 	if (chartData=="beta") return;
 	chartData="beta";
-	if (chartData!="gamma")
-	{
-		$('#switch-gamma').show();
-		$('#switch-beta').hide();
-	} else {
-
-		$('#switch-gamma').hide();
-		$('#switch-beta').show();
-	}
+	hideElements();
 	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
@@ -251,17 +256,9 @@ function switchToPolar()
 	$('#switch-polar').hide();
 	$('#switch-linear').show();
 	$('#switch-stats').show();
-	if (chartData!="gamma")
-	{
-		$('#switch-gamma').show();
-		$('#switch-beta').hide();
-	} else {
-
-		$('#switch-gamma').hide();
-		$('#switch-beta').show();
-	}
 	if (chartType=="polar") return;
 	chartType="polar";
+	hideElements();
 	var x=pointMappers.x;
 	var y=pointMappers.rB;
 	transitionPolar("beta-data", data, x, "a", y, "b");
@@ -287,18 +284,9 @@ function switchToLinear()
 	$('#switch-polar').show();
 	$('#switch-linear').hide();
 	$('#switch-stats').show();
-	if (chartData!="gamma")
-	{
-		$('#switch-gamma').show();
-		$('#switch-beta').hide();
-	} else {
-
-		$('#switch-gamma').hide();
-		$('#switch-beta').show();
-	}
 	if (chartType=="linear") return;
 	chartType="linear";
-
+	hideElements();
 	var x=pointMappers.x;
 	var y=pointMappers.yB;
 	transitionLine("beta-data", data, x, "n", y, "b");
@@ -315,6 +303,8 @@ function switchToLinear()
 
 	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
 	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 1.0);
+	graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
+	graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
 }
 
 function switchToStats()
@@ -409,7 +399,7 @@ function stopListener() {
 		.append("svg:g");
 
 	 graph.append("text")
-	 	.attr("class", "gamma")
+	 	.attr("id", "text-gamma")
 	 	.attr("x", 170)
     	.attr("y", 170)
     	.attr("dy", ".35em")
@@ -417,7 +407,20 @@ function stopListener() {
     	.attr('fill', '#cccccc')
     	.attr('stroke', '#cccccc')
     	.style("text-anchor", "middle")
-    	.text("");
+	    .attr('opacity', 0)
+    	.text("99");
+
+     graph.append("text")
+	 	.attr("id", "text-beta")
+	 	.attr("x", 170)
+    	.attr("y", 170)
+    	.attr("dy", ".35em")
+    	.attr('font-size', '4em')
+    	.attr('fill', '#cccccc')
+    	.attr('stroke', '#cccccc')
+    	.style("text-anchor", "middle")
+	    .attr('opacity', 0)
+    	.text("88");
 
 
 
@@ -434,7 +437,10 @@ function stopListener() {
 
 function prepareListener()
 {
-	//testMode="SIMPLE";
+	var href = ""+$(location).attr('href');			
+	if (href.substring( 0, "file:".length ) === "file:")
+		testMode="SIMPLE";
+
 	s=second;
 	console.log("PREPARE");
 	$("#sd-vis").remove();
