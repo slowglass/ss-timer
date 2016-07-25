@@ -22,7 +22,7 @@
 	<body>
 		<div>
 			<div role="main">
-				<div id="buttons">
+				<div id="buttons" style="display: none;">
 					<a href="#" id="switch-polar" class="scb"><img src="img/Polar1.png"/></a>
 					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
 					<a href="#" id="switch-beta" class="scb"><img src="img/UpDown.png"/></a>
@@ -30,9 +30,19 @@
 					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
 					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
 				</div>
-				<div id="graphs">
-					<img id="working" src="img/working2.gif" style="height:340px; width:340px" />
-				<div id="stats">
+				<div id="working">
+					<svg xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16">
+						<circle r="7" fill="#808080" filter="url(#f)"/>
+						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
+						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
+						<circle cy="-3.5" r="1.1" fill="#004"/>
+						<circle cy="3.5" r="1.1" fill="#ccf"/>
+						</g>
+					</svg>
+				</div>
+				<div id="graphs" style="display: none;">
+				</div>
+				<div id="stats" style="display: none;">
 					<table class="stats" id="gradient-style">
 						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
 						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
@@ -55,13 +65,14 @@
 		<script src="vendor/wow/wow.min.js"></script>
 		<script src="js/nativedroid2.js"></script>
 		<script src="nd2settings.js"></script>-->
-		<script src="https://d3js.org/d3.v3.min.js"></script>
-
+		<script src="js/d3.v3.min.js"></script>
+		<script src="js/yin-yang.js"></script>
 		<script src="howler2.js"></script>
 		<script src="NoSleep.js"></script>
 
 		<script>
-var speed= 3000;
+var second= 1000;
+var speed= 3*second;
 var graph = null;
 var data = [];
 var statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
@@ -71,7 +82,7 @@ var chartType="linear";
 var chartData="stats";
 var pointMappers = {}
 var linetype="linear";
-
+var testMode="NONE";
 function drawLine(graph, cls, data, fX, aX, fY, aY, colour, opacity)
 {
 	var line = d3.svg.line()
@@ -136,27 +147,29 @@ function populateGraph(graph)
 	var w=340; //graph.attr('width');
 	var mxB = d3.max(data, function (d) { return d.b; });
 	var mnB = d3.min(data, function (d) { return d.b; }); 
-	var rangeB = Math.max(mxB, -1*mnB)*1.1;
-	var mxG = d3.max(data, function (d) { return d.b; });
-	var mnG = d3.min(data, function (d) { return d.b; }); 
-	var rangeG = Math.max(mxG, -1*mnG)*1.1;
+	var rangeB = Math.max(mxB, -1*mnB);
+	var mxG = d3.max(data, function (d) { return d.g; });
+	var mnG = d3.min(data, function (d) { return d.g; }); 
+	var rangeG = Math.max(mxG, -1*mnG);
 
 	for (var i=0; i<data.length; i++)
 	{
 		data[i].z=0;
-		data[i].mxB=mxB;
-		data[i].mnB=mnB;;
+		data[i].mxB=rangeB;
+		data[i].mnB=rangeB*-1;
 		data[i].mxA=-180;
 		data[i].mnA=180;
-		data[i].mxG=mxG;
-		data[i].mnG=mnG;
+		data[i].mxG=rangeG;
+		data[i].mnG=rangeG*-1;
 	}
 
+	rangeB *= 1.1;
+	rangeG *= 1.1;
 	pointMappers.x   = d3.scale.linear().domain([0, data.length]).range([0, w]);
 	pointMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
-	pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 30]);
+	pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 90]);
 	pointMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
-	pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 30]); 
+	pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 90]); 
 	pointMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
 
 	var x=pointMappers.x;
@@ -274,7 +287,7 @@ function switchToLinear()
 	$('#switch-polar').show();
 	$('#switch-linear').hide();
 	$('#switch-stats').show();
-	if (chartData=="beta")
+	if (chartData!="gamma")
 	{
 		$('#switch-gamma').show();
 		$('#switch-beta').hide();
@@ -369,11 +382,16 @@ function startListener() {
 	chartData="stats";
 	
 	$('#working').show();
+	$('#working svg').css("webkitAnimationPlayState", "running");
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
 	statsB = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 	statsG = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
+	if (testMode=="SIMPLE")
+		for (var i=0;i<60; i++)
+			deviceOrientationListener({alpha: (i*10)%360, beta: (i*7)%12-6, gamma: i%11});
+
 	window.addEventListener("deviceorientation", deviceOrientationListener);
 }
 
@@ -382,8 +400,10 @@ function stopListener() {
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
 	$('#working').hide();
+	$('#working svg').css("webkitAnimationPlayState", "paused");
 
 	graph = d3.select("#graphs").append("svg:svg")
+		.attr("id", "sd-vis")
 		.attr("width", 340)
 		.attr("height", 340)
 		.append("svg:g");
@@ -414,20 +434,26 @@ function stopListener() {
 
 function prepareListener()
 {
+	testMode="SIMPLE";
+	s=second;
 	console.log("PREPARE");
-	$("#graphs svg").remove();
+	$("#sd-vis").remove();
 
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
 
-	var s=1000;
-	//s=100;
+	$('#working').hide();
+	$('#working').fadeIn(5*s);
+	$('#working svg').css("webkitAnimationPlayState", "paused");
+
+	if (testMode!="NONE") s=10;
+	
 	window.setTimeout(
 		function() { 
 			startListener();
-			window.setTimeout(function() { stopListener(); }, 10*s);
-		}, 4*s);
+			window.setTimeout(function() { stopListener(); }, 20*s);
+		}, 5*s);
 }
 
 $('#working').hide();
