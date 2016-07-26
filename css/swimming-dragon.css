@@ -7,66 +7,14 @@ div {
 	background-color: rgba(0,0,0,0.0);
 }
 
-#sd-vis text {
-	color: #cccccc;
-}
-#sd-vis path {
-	stroke-width: 1;
-	fill: none;
-}
+/* Text Box in the center of the Polar Graph */
+#sd-vis text { color: #cccccc; }
+#sd-vis path { stroke-width: 1; fill: none; }
 	
-#working {
-	margin: 60px;
-}	
+/* Tai Chi Spinner */
+#working {	margin: 60px; }	
+#working svg { -webkit-animation: SPIN 2s infinite linear; }
+@-webkit-keyframes SPIN {  100% { -webkit-transform: rotate(360deg); } }
 
-#working svg {
-	-webkit-animation: SPIN 2s infinite linear;
-}
-
-@-webkit-keyframes SPIN {
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-.scb img {
-	width: 52px;
-	height: 52px;
-}
-.graph-holder {
-  position: relative;
-  width: 340px;
-  height: 90px;
-	  border: 0px solid #c00;
-}
-.graph-holder svg {	
-		position: absolute;
-	top: 0px;
-		left: 0px;
-}
-.graph-holder div {	
-		position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-	text-align: center;
-	font-size: 4em;
-	color: #cccccc;
-}
-	/* tell the SVG path to be a thin blue line without any area fill */
-
-	div.ui-content { padding: 0;}
-
-@media (min-width: 768px) and (max-width: 991px) {
-	.clock-item {
-		margin-bottom: 30px;		
-	}
-}
-
-@media (max-width: 767px) {
-	.clock-item {
-		margin: 0px 30px 30px 30px;
-	}
-}
+/* Buttons */
+.scb img {	width: 52px; height: 52px; }
